@@ -10,7 +10,12 @@ function AuthProvider({ children }) {
     if (!email || !password) {
       throw new Error("Email and password are required");
     }
-    const role = email.includes("admin") ? "admin" : "tourist";
+    let role = "tourist";
+    if (email.includes("admin")) {
+      role = "admin";
+    } else if (email.includes("guide")) {
+      role = "guide";
+    }
     setUser({ name: email.split("@")[0], email, role });
     return role;
   };

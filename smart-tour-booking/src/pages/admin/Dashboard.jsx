@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useAuth } from "../../context/AuthContext";
+import { useData } from "../../context/DataContext";
 import { Link } from "react-router-dom";
 import PageHeader from "../../components/admin/PageHeader";
 import SearchBar from "../../components/admin/SearchBar";
@@ -9,26 +10,24 @@ import StatCard from "../../components/admin/StatCard";
 
 function Dashboard() {
   const { user } = useAuth();
+  const { tours, bookings, users, guides, formatTZS } = useData();
   const [search, setSearch] = useState("");
 
-  const recentBookings = [
-    { id: 1, user: "Sarah M.", tour: "Serengeti Safari", date: "Jul 10, 2026", amount: "$799", status: "Confirmed" },
-    { id: 2, user: "James K.", tour: "Zanzibar Beach", date: "Jul 20, 2026", amount: "$499", status: "Pending" },
-    { id: 3, user: "Grace T.", tour: "Kilimanjaro Trek", date: "Aug 05, 2026", amount: "$1,200", status: "Confirmed" },
-    { id: 4, user: "John D.", tour: "Ngorongoro Crater", date: "Aug 12, 2026", amount: "$650", status: "Pending" },
-    { id: 5, user: "Maria L.", tour: "Dar City Tour", date: "Aug 18, 2026", amount: "$199", status: "Rejected" },
-  ];
-
+  const recentBookings = bookings.slice(0, 5);
   const filteredBookings = recentBookings.filter((b) =>
-    b.user.toLowerCase().includes(search.toLowerCase()) ||
-    b.tour.toLowerCase().includes(search.toLowerCase())
+    b.userName.toLowerCase().includes(search.toLowerCase()) ||
+    b.tourTitle.toLowerCase().includes(search.toLowerCase())
   );
 
+  const confirmedRevenue = bookings
+    .filter((b) => b.status === "Confirmed")
+    .reduce((sum, b) => sum + b.amount, 0);
+
   const stats = [
-    { icon: "👥", title: "Total Users", value: "2,847", color: "bg-blue-50 text-blue-600" },
-    { icon: "🏨", title: "Active Tours", value: "156", color: "bg-green-50 text-green-600" },
-    { icon: "📅", title: "Bookings", value: "1,234", color: "bg-purple-50 text-purple-600" },
-    { icon: "💰", title: "Revenue", value: "$89K", color: "bg-amber-50 text-amber-600" },
+    { icon: "👥", title: "Total Users", value: users.length.toLocaleString(), color: "bg-blue-50 text-blue-600" },
+    { icon: "🏨", title: "Active Tours", value: tours.length.toString(), color: "bg-green-50 text-green-600" },
+    { icon: "📅", title: "Bookings", value: bookings.length.toLocaleString(), color: "bg-purple-50 text-purple-600" },
+    { icon: "💰", title: "Revenue", value: `Tsh ${confirmedRevenue.toLocaleString()}`, color: "bg-amber-50 text-amber-600" },
   ];
 
   return (
@@ -55,56 +54,97 @@ function Dashboard() {
         ))}
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
-          <h3 className="text-lg font-bold text-gray-800">
-            Recent Bookings
-          </h3>
-          <SearchBar
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search bookings..."
-          />
+      <div className="grid md:grid-cols-3 gap-6">
+        <div className="md:col-span-2 bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
+            <h3 className="text-lg font-bold text-gray-800">
+              Recent Bookings
+            </h3>
+            <div className="flex gap-3 w-full sm:w-auto">
+              <SearchBar
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search bookings..."
+              />
+              <Link
+                to="/admin/bookings"
+                className="px-4 py-2.5 bg-green-600 text-white rounded-xl text-sm font-bold hover:bg-green-700 transition whitespace-nowrap"
+              >
+                View All
+              </Link>
+            </div>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="border-b border-gray-100">
+                  <th className="pb-3 text-sm font-semibold text-gray-500">ID</th>
+                  <th className="pb-3 text-sm font-semibold text-gray-500">User</th>
+                  <th className="pb-3 text-sm font-semibold text-gray-500">Tour</th>
+                  <th className="pb-3 text-sm font-semibold text-gray-500">Date</th>
+                  <th className="pb-3 text-sm font-semibold text-gray-500">Amount</th>
+                  <th className="pb-3 text-sm font-semibold text-gray-500">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredBookings.map((booking, i) => (
+                  <motion.tr
+                    key={booking.id}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: i * 0.05 }}
+                    className="border-b border-gray-50 hover:bg-gray-50 transition-colors"
+                  >
+                    <td className="py-4 text-sm text-gray-600">#{booking.id}</td>
+                    <td className="py-4 text-sm font-medium text-gray-900">{booking.userName}</td>
+                    <td className="py-4 text-sm text-gray-600 max-w-[180px] truncate">{booking.tourTitle}</td>
+                    <td className="py-4 text-sm text-gray-600">{booking.date}</td>
+                    <td className="py-4 text-sm font-semibold text-gray-900">{formatTZS(booking.amount)}</td>
+                    <td className="py-4">
+                      <StatusBadge status={booking.status} />
+                    </td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {filteredBookings.length === 0 && (
+            <p className="text-center text-gray-500 py-8">No bookings found.</p>
+          )}
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full text-left">
-            <thead>
-              <tr className="border-b border-gray-100">
-                <th className="pb-3 text-sm font-semibold text-gray-500">ID</th>
-                <th className="pb-3 text-sm font-semibold text-gray-500">User</th>
-                <th className="pb-3 text-sm font-semibold text-gray-500">Tour</th>
-                <th className="pb-3 text-sm font-semibold text-gray-500">Date</th>
-                <th className="pb-3 text-sm font-semibold text-gray-500">Amount</th>
-                <th className="pb-3 text-sm font-semibold text-gray-500">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredBookings.map((booking, i) => (
-                <motion.tr
-                  key={booking.id}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: i * 0.05 }}
-                  className="border-b border-gray-50 hover:bg-gray-50 transition-colors"
-                >
-                  <td className="py-4 text-sm text-gray-600">#{booking.id}</td>
-                  <td className="py-4 text-sm font-medium text-gray-900">{booking.user}</td>
-                  <td className="py-4 text-sm text-gray-600">{booking.tour}</td>
-                  <td className="py-4 text-sm text-gray-600">{booking.date}</td>
-                  <td className="py-4 text-sm font-semibold text-gray-900">{booking.amount}</td>
-                  <td className="py-4">
-                    <StatusBadge status={booking.status} />
-                  </td>
-                </motion.tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <div className="space-y-6">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+            <h3 className="text-lg font-bold text-gray-800 mb-4">Quick Stats</h3>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Active Guides</span>
+                <span className="font-bold text-gray-900">{guides.filter((g) => g.status === "Active").length}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Pending Bookings</span>
+                <span className="font-bold text-amber-700">{bookings.filter((b) => b.status === "Pending").length}</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm text-gray-600">Total Tours</span>
+                <span className="font-bold text-gray-900">{tours.length}</span>
+              </div>
+            </div>
+          </div>
 
-        {filteredBookings.length === 0 && (
-          <p className="text-center text-gray-500 py-8">No bookings found.</p>
-        )}
+          <div className="bg-gradient-to-br from-green-600 to-emerald-700 rounded-2xl shadow-sm p-6 text-white">
+            <h3 className="font-bold text-lg mb-2">Need help?</h3>
+            <p className="text-green-100 text-sm mb-4">Access guides, reports, and system logs from the sidebar.</p>
+            <Link
+              to="/admin/reports"
+              className="inline-block bg-white/20 backdrop-blur-sm border border-white/30 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-white/30 transition"
+            >
+              View Reports
+            </Link>
+          </div>
+        </div>
       </div>
     </motion.div>
   );

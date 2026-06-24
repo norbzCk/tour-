@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useData } from "../context/DataContext";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 function Register() {
   const { login } = useAuth();
+  const { addUser } = useData();
   const [step, setStep] = useState(1);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -15,11 +17,13 @@ function Register() {
     if (step !== 2) return;
 
     const form = e.target;
+    const name = form.name.value.trim();
     const email = form.email.value.trim();
+    const phone = form.phone.value.trim();
     const password = form.password.value;
     const confirmPassword = form.confirmPassword.value;
 
-    if (!email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword) {
       setError("Please fill in all fields");
       return;
     }
@@ -34,6 +38,12 @@ function Register() {
 
     setLoading(true);
     try {
+      addUser({
+        name,
+        email,
+        phone: phone || "",
+        role: "tourist",
+      });
       await login(email, password);
       setStep(3);
     } catch (err) {

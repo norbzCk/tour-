@@ -1,56 +1,11 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-
-const tours = {
-  1: {
-    id: 1,
-    title: "Mountain Adventure",
-    destination: "Kilimanjaro",
-    price: 299,
-    duration: "7 Days",
-    rating: 4.8,
-    image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b",
-    description:
-      "Experience the beauty of Mount Kilimanjaro with professional guides and breathtaking views.",
-  },
-  2: {
-    id: 2,
-    title: "Beach Paradise",
-    destination: "Zanzibar",
-    price: 499,
-    duration: "5 Days",
-    rating: 4.6,
-    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
-    description:
-      "Relax on white sand beaches and enjoy crystal clear waters in Zanzibar.",
-  },
-  3: {
-    id: 3,
-    title: "City Tour",
-    destination: "Dar es Salaam",
-    price: 199,
-    duration: "2 Days",
-    rating: 4.2,
-    image: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b",
-    description:
-      "Discover culture, food and attractions across Tanzania's vibrant city.",
-  },
-  4: {
-    id: 4,
-    title: "Safari Expedition",
-    destination: "Serengeti",
-    price: 799,
-    duration: "7 Days",
-    rating: 4.9,
-    image: "https://images.unsplash.com/photo-1516426122078-c23e76319801",
-    description:
-      "See Africa's wildlife in their natural habitat on an unforgettable safari.",
-  },
-};
+import { useData } from "../context/DataContext";
 
 function TourDetails() {
   const { id } = useParams();
-  const tour = tours[id];
+  const { tours, formatTZS } = useData();
+  const tour = tours.find((t) => t.id === Number(id));
 
   if (!tour) {
     return (
@@ -120,8 +75,11 @@ function TourDetails() {
             <div className="text-center pb-6 border-b border-gray-100">
               <span className="text-sm text-gray-500">Price per person</span>
               <div className="text-4xl font-extrabold text-gray-900 mt-1">
-                ${tour.price}
+                {formatTZS(tour.price)}
               </div>
+              {tour.priceUSD && (
+                <div className="text-xs text-gray-400 mt-1">≈ ${tour.priceUSD} USD</div>
+              )}
             </div>
 
             <div className="py-6 space-y-4">

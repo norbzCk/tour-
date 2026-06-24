@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
+import { useData } from "../context/DataContext";
 import heroImage from "../assets/hero.png";
 import baladiniBeach from "../assets/Baladini Zanzibar beach vacation.jpeg";
 import queenHotel from "../assets/Queen hotel in Zanzibar.jpeg";
@@ -8,13 +9,15 @@ import makunduchi from "../assets/MAKUNDUCHI-ZANZIBAR.jpeg";
 import nungwiBeach from "../assets/NUNGWI BEACH - ZANZIBAR.jpeg";
 
 function Home() {
+  const { formatTZS } = useData();
   const featuredTours = [
     {
       id: 1,
       title: "Zanzibar Beach Escape",
       image: baladiniBeach,
       destination: "Zanzibar",
-      price: 499,
+      price: Math.round(499 * 2500),
+      priceUSD: 499,
       rating: 4.6,
     },
     {
@@ -22,7 +25,8 @@ function Home() {
       title: "Queen Hotel Zanzibar",
       image: queenHotel,
       destination: "Zanzibar",
-      price: 599,
+      price: Math.round(599 * 2500),
+      priceUSD: 599,
       rating: 4.8,
     },
     {
@@ -30,7 +34,8 @@ function Home() {
       title: "Makunduchi Beach Stay",
       image: makunduchi,
       destination: "Zanzibar",
-      price: 399,
+      price: Math.round(399 * 2500),
+      priceUSD: 399,
       rating: 4.5,
     },
   ];
@@ -194,7 +199,7 @@ function Home() {
                   className="w-full h-64 object-cover transition-transform duration-500 hover:scale-110"
                 />
                 <span className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold text-green-700">
-                  ${tour.price}
+                  {formatTZS(tour.price)}
                 </span>
               </div>
 

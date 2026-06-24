@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import toursData from "../data/tours";
+import { useData } from "../context/DataContext";
 
 function Tours() {
+  const { tours, formatTZS } = useData();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
 
-  const filteredTours = toursData.filter((tour) => {
+  const filteredTours = tours.filter((tour) => {
     const matchesSearch =
       tour.title.toLowerCase().includes(search.toLowerCase()) ||
       tour.destination.toLowerCase().includes(search.toLowerCase());
@@ -18,7 +19,7 @@ function Tours() {
     return matchesSearch && matchesCategory;
   });
 
-  const categories = ["All", ...new Set(toursData.map((t) => t.category))];
+  const categories = ["All", ...new Set(tours.map((t) => t.category))];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -88,7 +89,7 @@ function Tours() {
                     {tour.category}
                   </span>
                   <span className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-sm font-bold text-green-700">
-                    ${tour.price}
+                    {formatTZS(tour.price)}
                   </span>
                 </div>
 

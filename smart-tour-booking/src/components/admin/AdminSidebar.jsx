@@ -4,9 +4,10 @@ import {
   FaMapMarkedAlt,
   FaChartBar,
   FaHistory,
-  FaBuilding,
   FaTachometerAlt,
   FaSignOutAlt,
+  FaUserTie,
+  FaCalendarAlt,
 } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
 
@@ -16,8 +17,9 @@ function AdminSidebar() {
   const navItems = [
     { to: "/admin", icon: FaTachometerAlt, label: "Dashboard" },
     { to: "/admin/users", icon: FaUsers, label: "Users" },
-    { to: "/admin/operators", icon: FaBuilding, label: "Operators" },
+    { to: "/admin/operators", icon: FaUserTie, label: "Tour Guides" },
     { to: "/admin/tours", icon: FaMapMarkedAlt, label: "Tours" },
+    { to: "/admin/bookings", icon: FaCalendarAlt, label: "Bookings" },
     { to: "/admin/logs", icon: FaHistory, label: "Activity Logs" },
     { to: "/admin/reports", icon: FaChartBar, label: "Reports" },
   ];
