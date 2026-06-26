@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useData } from "../context/DataContext";
+import { useToast } from "../hooks/useToast";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
 function Register() {
   const { login } = useAuth();
   const { addUser, addGuide } = useData();
+  const { addToast } = useToast();
   const [step, setStep] = useState(1);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -56,9 +58,11 @@ function Register() {
         });
       }
       await login(email, password);
+      addToast("Account created successfully! Welcome to SmartTour.", "success");
       setStep(3);
     } catch (err) {
       setError(err.message || "Registration failed");
+      addToast(err.message || "Registration failed", "error");
     } finally {
       setLoading(false);
     }

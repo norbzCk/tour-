@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useToast } from "../hooks/useToast";
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
 
 function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const { login } = useAuth();
+  const { addToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
   const [error, setError] = useState("");
@@ -23,6 +25,7 @@ function Login() {
     setLoading(true);
     try {
       const role = await login(email, password);
+      addToast(`Welcome back, ${email.split("@")[0]}!`, "success");
       const redirectTo = location.state?.from;
       if (role === "admin") {
         navigate("/admin");
@@ -33,6 +36,7 @@ function Login() {
       }
     } catch (err) {
       setError(err.message || "Login failed. Please try again.");
+      addToast(err.message || "Login failed", "error");
     } finally {
       setLoading(false);
     }
@@ -41,21 +45,24 @@ function Login() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-emerald-100 px-4 py-12">
       <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="w-full max-w-md bg-white/80 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/50"
+        initial={{ opacity: 0, y: 30, scale: 0.95 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="w-full max-w-md bg-white/90 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-green-100/50"
       >
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl shadow-lg mb-4">
+          <motion.div
+            initial={{ scale: 0, rotate: -180 }}
+            animate={{ scale: 1, rotate: 0 }}
+            transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+            className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl shadow-lg mb-4"
+          >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-          </div>
+          </motion.div>
           <h1 className="text-3xl font-extrabold text-gray-900">SmartTour</h1>
-          <p className="text-sm text-gray-500 mt-2">
-            Your journey begins with a single click
-          </p>
+          <p className="text-sm text-gray-500 mt-2">Your journey begins with a single click</p>
         </div>
 
         {error && (
@@ -76,7 +83,7 @@ function Login() {
             onClick={() => setIsLogin(true)}
             className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all ${
               isLogin
-                ? "bg-white text-green-700 shadow-sm"
+                ? "bg-white text-green-700 shadow-md"
                 : "text-gray-500 hover:text-gray-700"
             }`}
           >
@@ -86,7 +93,7 @@ function Login() {
             onClick={() => setIsLogin(false)}
             className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all ${
               !isLogin
-                ? "bg-white text-green-700 shadow-sm"
+                ? "bg-white text-green-700 shadow-md"
                 : "text-gray-500 hover:text-gray-700"
             }`}
           >
@@ -99,40 +106,68 @@ function Login() {
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Email Address
             </label>
-            <input
-              type="email"
-              name="email"
-              placeholder="you@example.com"
-              required
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
-            />
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 12a4 4 0 10-8 0 4 4 0 018 0zM5.121 17.804A13.978 13.978 0 0112 15c2.304 0 4.506.647 6.879 2.196M15 10a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </div>
+              <input
+                type="email"
+                name="email"
+                placeholder="you@example.com"
+                required
+                className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+              />
+            </div>
           </div>
 
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               Password
             </label>
-            <input
-              type="password"
-              name="password"
-              placeholder="••••••••"
-              required
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
-            />
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+              </div>
+              <input
+                type="password"
+                name="password"
+                placeholder="••••••••"
+                required
+                className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+              />
+            </div>
           </div>
 
           {!isLogin && (
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Full Name
-              </label>
-              <input
-                type="text"
-                placeholder="John Doe"
-                required
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
-              />
-            </div>
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              className="overflow-hidden"
+            >
+              <div>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                  Full Name
+                </label>
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="John Doe"
+                    required
+                    className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                  />
+                </div>
+              </div>
+            </motion.div>
           )}
 
           <div className="flex items-center justify-between">

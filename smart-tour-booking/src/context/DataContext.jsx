@@ -105,6 +105,11 @@ function DataProvider({ children }) {
     addLog("Booking Updated", "admin@example.com", `Updated booking ID: ${id} to ${status}`);
   }, [addLog]);
 
+  const cancelBooking = useCallback((id) => {
+    setBookings((prev) => prev.map((b) => (b.id === id ? { ...b, status: "Cancelled" } : b)));
+    addLog("Booking Cancelled", "system", `Cancelled booking ID: ${id}`);
+  }, [addLog]);
+
   const addUser = useCallback((user) => {
     const newUser = { ...user, id: nextId, joinedAt: new Date().toISOString().slice(0, 10) };
     setUsers((prev) => [...prev, newUser]);
@@ -151,7 +156,7 @@ function DataProvider({ children }) {
 
   const value = {
     tours, addTour, updateTour, deleteTour, assignGuide,
-    bookings, addBooking, updateBookingStatus,
+    bookings, addBooking, updateBookingStatus, cancelBooking,
     users, addUser, updateUser, deleteUser, findUserByEmail,
     guides, addGuide, updateGuide, deleteGuide, findGuideByEmail,
     logs, addLog,
