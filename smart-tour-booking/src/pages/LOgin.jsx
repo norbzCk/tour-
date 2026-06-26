@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -22,8 +23,11 @@ function Login() {
     setLoading(true);
     try {
       const role = await login(email, password);
+      const redirectTo = location.state?.from;
       if (role === "admin") {
         navigate("/admin");
+      } else if (redirectTo) {
+        navigate(redirectTo, { replace: true });
       } else {
         navigate("/tours");
       }

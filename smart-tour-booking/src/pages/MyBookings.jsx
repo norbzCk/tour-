@@ -84,6 +84,11 @@ function MyBookings() {
                         <span className="font-semibold text-green-700">{formatTZS(booking.amount)}</span>
                         {booking.amountUSD && <span className="text-gray-400">≈ ${booking.amountUSD} USD</span>}
                       </div>
+                      <div className="flex flex-wrap gap-4 text-sm text-gray-500 mt-2">
+                        <span>Payment: {booking.paymentMethod || "MPESA"}</span>
+                        <span>Status: {booking.paymentStatus || "Paid"}</span>
+                        {booking.transactionId && <span>Tx: {booking.transactionId}</span>}
+                      </div>
                       <p className="text-xs text-gray-400">Booking #{booking.id} • Created {booking.createdAt}</p>
                     </div>
                   </motion.div>

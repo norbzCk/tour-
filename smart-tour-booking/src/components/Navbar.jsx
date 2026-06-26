@@ -29,6 +29,8 @@ function Navbar() {
         return <span className="text-xs font-bold bg-red-100 text-red-700 px-2.5 py-1 rounded-full">Admin</span>;
       case "guide":
         return <span className="text-xs font-bold bg-blue-100 text-blue-700 px-2.5 py-1 rounded-full">Guide</span>;
+      case "operator":
+        return <span className="text-xs font-bold bg-purple-100 text-purple-700 px-2.5 py-1 rounded-full">Operator</span>;
       default:
         return <span className="text-xs font-bold bg-green-100 text-green-700 px-2.5 py-1 rounded-full">Tourist</span>;
     }
@@ -78,6 +80,15 @@ function Navbar() {
                 className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-green-700 hover:bg-green-50 transition-colors"
               >
                 Guide Dashboard
+              </Link>
+            )}
+
+            {user?.role === "operator" && (
+              <Link
+                to="/operator"
+                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 hover:text-green-700 hover:bg-green-50 transition-colors"
+              >
+                Operator Dashboard
               </Link>
             )}
           </div>
@@ -174,6 +185,16 @@ function Navbar() {
                             Guide Dashboard
                           </Link>
                         )}
+                        {user.role === "operator" && (
+                          <Link
+                            to="/operator"
+                            onClick={() => setProfileOpen(false)}
+                            className="flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                          >
+                            <span className="text-base">🏨</span>
+                            Operator Dashboard
+                          </Link>
+                        )}
                         {user.role === "admin" && (
                           <Link
                             to="/admin"
@@ -259,6 +280,16 @@ function Navbar() {
                   className="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
                 >
                   Guide Dashboard
+                </Link>
+              )}
+
+              {user?.role === "operator" && (
+                <Link
+                  to="/operator"
+                  onClick={() => setMobileOpen(false)}
+                  className="block px-4 py-2.5 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors"
+                >
+                  Operator Dashboard
                 </Link>
               )}
 

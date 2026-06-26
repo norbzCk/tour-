@@ -6,10 +6,11 @@ import { Link } from "react-router-dom";
 
 function Register() {
   const { login } = useAuth();
-  const { addUser } = useData();
+  const { addUser, addGuide } = useData();
   const [step, setStep] = useState(1);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [role, setRole] = useState("tourist");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,8 +43,18 @@ function Register() {
         name,
         email,
         phone: phone || "",
-        role: "tourist",
+        role: role,
       });
+      if (role === "operator" || role === "guide") {
+        addGuide({
+          name,
+          email,
+          phone: phone || "",
+          specialty: "General",
+          experience: "New",
+          status: "Active",
+        });
+      }
       await login(email, password);
       setStep(3);
     } catch (err) {
@@ -180,9 +191,13 @@ function Register() {
               </div>
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">I am a</label>
-                <select className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50">
-                  <option>Tourist</option>
-                  <option>Tour Operator</option>
+                <select
+                  value={role}
+                  onChange={(e) => setRole(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                >
+                  <option value="tourist">Tourist</option>
+                  <option value="operator">Tour Operator</option>
                 </select>
               </div>
               <div className="flex gap-3">

@@ -1,8 +1,9 @@
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useParams, Link, useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useData } from "../context/DataContext";
 import { useAuth } from "../context/AuthContext";
+import MpesaSimulator from "../components/MpesaSimulator";
 
 function Booking() {
   const { id } = useParams();
@@ -10,9 +11,18 @@ function Booking() {
   const { tours, addBooking, formatTZS, USD_TO_TZS } = useData();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [travelers, setTravelers] = useState(1);
   const [specialRequests, setSpecialRequests] = useState("");
   const [success, setSuccess] = useState(false);
+  const [paymentSession, setPaymentSession] = useState(null);
+
+  useEffect(() => {
+    if (!user) {
+      const from = location?.state?.from || `/booking/${id}`;
+      navigate("/login", { state: { from } });
+    }
+  }, [user, navigate, location?.state, id]);
 
   const tour = tours.find((t) => t.id === tourId);
   const tzsAmount = tour ? tour.price * travelers : 0;
@@ -32,11 +42,9 @@ function Booking() {
     );
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleBookingComplete = (paymentData) => {
     if (!user) return;
-
-    addBooking({
+    const booking = addBooking({
       userId: user.email.includes("admin") ? 1 : 2,
       userName: user.name,
       userEmail: user.email,
@@ -47,8 +55,13 @@ function Booking() {
       amountUSD: usdAmount,
       travelers,
       specialRequests,
+      paymentStatus: paymentData.paymentStatus,
+      paymentMethod: paymentData.paymentMethod || "MPESA",
+      transactionId: paymentData.transactionId,
+      phone: paymentData.phone,
+      status: "Pending",
     });
-
+    setPaymentSession(paymentData);
     setSuccess(true);
     setTimeout(() => navigate("/my-bookings"), 2000);
   };
@@ -66,9 +79,10 @@ function Booking() {
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Booking Request Sent!</h2>
-          <p className="text-gray-600 mb-2">Your reservation for {tour.title} has been placed.</p>
-          <p className="text-sm text-gray-500">Status: <span className="font-semibold text-amber-600">Pending</span> (awaiting confirmation)</p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Payment Confirmed</h2>
+          <p className="text-gray-600 mb-2">Your MPESA payment for {tour.title} is complete.</p>
+          <p className="text-sm text-gray-500">Transaction: <span className="font-semibold text-green-700">{paymentSession?.transactionId}</span></p>
+          <p className="text-sm text-gray-500">Phone: <span className="font-semibold text-green-700">{paymentSession?.phone}</span></p>
           <p className="text-xs text-gray-400 mt-4">Redirecting to your bookings...</p>
         </motion.div>
       </div>
@@ -105,26 +119,26 @@ function Booking() {
               </div>
             </div>
 
-            <form className="space-y-5" onSubmit={handleSubmit}>
+            <form className="space-y-5" onSubmit={(e) => e.preventDefault()}>
               <div className="grid md:grid-cols-2 gap-5">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
                   <input
                     type="text"
-                    defaultValue={user?.name || ""}
+                    value={user?.name || ""}
                     placeholder="John Doe"
-                    required
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                    readOnly
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-100 text-gray-700 cursor-not-allowed"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Email</label>
                   <input
                     type="email"
-                    defaultValue={user?.email || ""}
+                    value={user?.email || ""}
                     placeholder="you@example.com"
-                    required
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                    readOnly
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-100 text-gray-700 cursor-not-allowed"
                   />
                 </div>
               </div>
@@ -134,9 +148,10 @@ function Booking() {
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
                   <input
                     type="tel"
+                    value={paymentSession?.phone || ""}
                     placeholder="+255 712 345 678"
-                    required
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                    readOnly
+                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-100 text-gray-700 cursor-not-allowed"
                   />
                 </div>
                 <div>
@@ -164,12 +179,15 @@ function Booking() {
                 />
               </div>
 
-              <button
-                type="submit"
-                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-4 rounded-xl font-bold text-lg hover:shadow-lg hover:shadow-green-200 transition transform hover:-translate-y-0.5"
-              >
-                Confirm Booking — {formatTZS(tzsAmount)}
-              </button>
+              <div className="rounded-3xl border border-dashed border-gray-200 p-5 bg-gray-50">
+                <p className="text-sm font-semibold text-gray-900 mb-3">Step 1: Authorize MPESA payment</p>
+                <MpesaSimulator
+                  amountLabel={`${formatTZS(tzsAmount)} (${usdAmount} USD)`}
+                  initialPhone={user?.phone || ""}
+                  onSuccess={handleBookingComplete}
+                  onCancel={() => navigate("/tours")}
+                />
+              </div>
             </form>
           </div>
         </motion.div>

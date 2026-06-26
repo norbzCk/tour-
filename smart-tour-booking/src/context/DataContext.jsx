@@ -20,11 +20,11 @@ const initialGuides = [
 ];
 
 const initialBookings = [
-  { id: 1, userId: 2, userName: "Sarah M.", userEmail: "sarah@example.com", tourId: 1, tourTitle: "Serengeti Safari Adventure", date: "2026-07-10", amount: Math.round(799 * USD_TO_TZS), amountUSD: 799, status: "Confirmed", travelers: 2, createdAt: "2026-06-20" },
-  { id: 2, userId: 3, userName: "James K.", userEmail: "james@example.com", tourId: 2, tourTitle: "Zanzibar Beach Escape", date: "2026-07-20", amount: Math.round(499 * USD_TO_TZS), amountUSD: 499, status: "Pending", travelers: 1, createdAt: "2026-06-21" },
-  { id: 3, userId: 4, userName: "Grace T.", userEmail: "grace@example.com", tourId: 3, tourTitle: "Mount Kilimanjaro Trek", date: "2026-08-05", amount: Math.round(1200 * USD_TO_TZS), amountUSD: 1200, status: "Confirmed", travelers: 1, createdAt: "2026-06-22" },
-  { id: 4, userId: 2, userName: "Sarah M.", userEmail: "sarah@example.com", tourId: 5, tourTitle: "Ngorongoro Crater Tour", date: "2026-08-12", amount: Math.round(650 * USD_TO_TZS), amountUSD: 650, status: "Pending", travelers: 4, createdAt: "2026-06-23" },
-  { id: 5, userId: 3, userName: "James K.", userEmail: "james@example.com", tourId: 4, tourTitle: "Dar es Salaam City Tour", date: "2026-08-18", amount: Math.round(199 * USD_TO_TZS), amountUSD: 199, status: "Rejected", travelers: 2, createdAt: "2026-06-24" },
+  { id: 1, userId: 2, userName: "Sarah M.", userEmail: "sarah@example.com", tourId: 1, tourTitle: "Serengeti Safari Adventure", date: "2026-07-10", amount: Math.round(799 * USD_TO_TZS), amountUSD: 799, status: "Confirmed", paymentStatus: "Paid", paymentMethod: "MPESA", travelers: 2, createdAt: "2026-06-20" },
+  { id: 2, userId: 3, userName: "James K.", userEmail: "james@example.com", tourId: 2, tourTitle: "Zanzibar Beach Escape", date: "2026-07-20", amount: Math.round(499 * USD_TO_TZS), amountUSD: 499, status: "Pending", paymentStatus: "Paid", paymentMethod: "MPESA", travelers: 1, createdAt: "2026-06-21" },
+  { id: 3, userId: 4, userName: "Grace T.", userEmail: "grace@example.com", tourId: 3, tourTitle: "Mount Kilimanjaro Trek", date: "2026-08-05", amount: Math.round(1200 * USD_TO_TZS), amountUSD: 1200, status: "Confirmed", paymentStatus: "Paid", paymentMethod: "MPESA", travelers: 1, createdAt: "2026-06-22" },
+  { id: 4, userId: 2, userName: "Sarah M.", userEmail: "sarah@example.com", tourId: 5, tourTitle: "Ngorongoro Crater Tour", date: "2026-08-12", amount: Math.round(650 * USD_TO_TZS), amountUSD: 650, status: "Pending", paymentStatus: "Paid", paymentMethod: "MPESA", travelers: 4, createdAt: "2026-06-23" },
+  { id: 5, userId: 3, userName: "James K.", userEmail: "james@example.com", tourId: 4, tourTitle: "Dar es Salaam City Tour", date: "2026-08-18", amount: Math.round(199 * USD_TO_TZS), amountUSD: 199, status: "Rejected", paymentStatus: "Paid", paymentMethod: "MPESA", travelers: 2, createdAt: "2026-06-24" },
 ];
 
 const initialLogs = [
@@ -88,7 +88,9 @@ function DataProvider({ children }) {
     const newBooking = {
       ...booking,
       id: nextId,
-      status: "Pending",
+      status: booking.status || "Pending",
+      paymentStatus: booking.paymentStatus || "Paid",
+      paymentMethod: booking.paymentMethod || "MPESA",
       createdAt: new Date().toISOString().slice(0, 10),
       amountUSD: booking.amountUSD || Math.round(booking.amount / USD_TO_TZS),
     };

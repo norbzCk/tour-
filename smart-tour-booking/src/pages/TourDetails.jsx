@@ -1,9 +1,11 @@
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useAuth } from "../context/AuthContext";
 import { useData } from "../context/DataContext";
 
 function TourDetails() {
   const { id } = useParams();
+  const { user } = useAuth();
   const { tours, formatTZS } = useData();
   const tour = tours.find((t) => t.id === Number(id));
 
@@ -98,14 +100,22 @@ function TourDetails() {
             </div>
 
             <Link
-              to={`/booking/${tour.id}`}
+              to={user ? `/booking/${tour.id}` : "/login"}
+              state={user ? undefined : { from: `/booking/${tour.id}` }}
               className="block w-full text-center bg-gradient-to-r from-green-600 to-emerald-600 text-white py-4 rounded-xl font-bold hover:shadow-lg hover:shadow-green-200 transition"
             >
-              Book Now
+              {user ? "Book Now" : "Login to Book"}
             </Link>
-            <p className="text-xs text-gray-400 text-center mt-3">
-              Free cancellation up to 48 hours before
-            </p>
+            {!user && (
+              <p className="text-xs text-gray-400 text-center mt-3">
+                Please log in to reserve this tour.
+              </p>
+            )}
+            {user && (
+              <p className="text-xs text-gray-400 text-center mt-3">
+                Free cancellation up to 48 hours before your departure.
+              </p>
+            )}
           </div>
         </motion.div>
       </div>

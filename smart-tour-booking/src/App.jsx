@@ -23,6 +23,7 @@ import Logs from "./pages/admin/Logs";
 import Reports from "./pages/admin/Reports";
 
 import GuideDashboard from "./pages/guide/GuideDashboard";
+import OperatorDashboard from "./pages/operator/OperatorDashboard";
 
 function AdminRoute({ children }) {
   const { user } = useAuth();
@@ -41,7 +42,7 @@ function AdminRoute({ children }) {
 
 function TouristRoute({ children }) {
   const { user } = useAuth();
-  if (!user || user.role === "admin" || user.role === "guide") {
+  if (!user || user.role === "admin" || user.role === "guide" || user.role === "operator") {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -62,6 +63,21 @@ function GuideRoute({ children }) {
         <div className="text-center">
           <h1 className="text-4xl font-bold text-red-600 mb-4">Access Denied</h1>
           <p className="text-gray-600">Please log in as a tour guide to view this page.</p>
+        </div>
+      </div>
+    );
+  }
+  return children;
+}
+
+function OperatorRoute({ children }) {
+  const { user } = useAuth();
+  if (!user || user.role !== "operator") {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-4xl font-bold text-red-600 mb-4">Access Denied</h1>
+          <p className="text-gray-600">Please log in as a tour operator to view this page.</p>
         </div>
       </div>
     );
@@ -92,6 +108,11 @@ function AppRoutes() {
         <GuideRoute>
           <GuideDashboard />
         </GuideRoute>
+      } />
+      <Route path="/operator" element={
+        <OperatorRoute>
+          <OperatorDashboard />
+        </OperatorRoute>
       } />
       <Route
         path="/admin"

@@ -15,6 +15,8 @@ function AuthProvider({ children }) {
       role = "admin";
     } else if (email.includes("guide")) {
       role = "guide";
+    } else if (email.includes("operator")) {
+      role = "operator";
     }
     setUser({ name: email.split("@")[0], email, role });
     return role;
