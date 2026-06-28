@@ -107,7 +107,7 @@ function Home() {
             className="max-w-2xl"
           >
             <span className="inline-block px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-green-300 text-sm font-bold mb-6 tracking-wide">
-              🌍 Tanzania's #1 Tour Platform
+              🌍 Tanzania's Most Trusted Tour Platform
             </span>
 
             <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight drop-shadow-xl">
@@ -115,6 +115,7 @@ function Home() {
               <span className="bg-gradient-to-r from-green-300 to-emerald-400 bg-clip-text text-transparent">
                 With SmartTour
               </span>
+
             </h1>
 
             <p className="text-base md:text-lg text-white mb-8 leading-relaxed max-w-lg drop-shadow-lg">

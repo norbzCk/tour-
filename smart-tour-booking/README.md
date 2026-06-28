@@ -1,22 +1,52 @@
-# React + Vite
+# SmartTour Booking
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern tour booking platform for exploring Tanzania's natural beauty and cultural heritage.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **Multi-role Authentication**: Tourists, tour guides, operators, and administrators
+- **Tour Discovery**: Browse tours across destinations like Zanzibar, Serengeti, Kilimanjaro, and Dar es Salaam
+- **Booking System**: Reserve tours with secure MPesa payment integration
+- **Interactive Dashboards**: Role-specific dashboards for users, guides, operators, and admins
+- **Admin Panel**: Manage users, operators, tours, bookings, and view reports
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- React 19 + Vite
+- Tailwind CSS
+- Framer Motion
+- React Router DOM
 
-## Project Documentation
+## Getting Started
 
-This repository includes a project introduction document describing the Smart Tour Booking System, its objectives, functional and non-functional requirements, user groups, interaction styles, and system hardware considerations.
+```bash
+npm install
+npm run dev
+```
 
-- [CHAPTER ONE: INTRODUCTION](./CHAPTER_ONE_INTRODUCTION.md)
+Open http://localhost:5173 to view the app.
 
-## Expanding the ESLint configuration
+## Available Scripts
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+## Project Structure
+
+```
+src/
+├── pages/          # Main application pages
+├── components/     # Reusable UI components
+├── context/        # React context providers
+├── data/           # Mock data files
+└── assets/         # Images and static assets
+```
+
+## User Roles
+
+- **Tourist**: Browse and book tours, view bookings
+- **Guide**: Manage assigned tours and schedules
+- **Operator**: Create and manage tour offerings
+- **Admin**: Full system access and management
