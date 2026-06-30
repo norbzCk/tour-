@@ -43,12 +43,12 @@ function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-emerald-100 px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-emerald-100 dark:from-slate-900 dark:via-slate-900 dark:to-slate-950 px-4 py-12 transition-colors duration-300">
       <motion.div
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
-        className="w-full max-w-md bg-white/90 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-green-100/50"
+        className="w-full max-w-md bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-green-100/50 dark:border-slate-700/50"
       >
         <div className="text-center mb-8">
           <motion.div
@@ -61,15 +61,15 @@ function Login() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </motion.div>
-          <h1 className="text-3xl font-extrabold text-gray-900">SmartTour</h1>
-          <p className="text-sm text-gray-500 mt-2">Your journey begins with a single click</p>
+          <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white">SmartTour</h1>
+          <p className="text-sm text-gray-505 dark:text-slate-400 mt-2">Your journey begins with a single click</p>
         </div>
 
         {error && (
           <motion.div
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 rounded-xl bg-red-50 border border-red-100 text-red-700 text-sm font-medium flex items-center gap-2"
+            className="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-950/20 border border-red-100 dark:border-red-900/30 text-red-705 dark:text-red-400 text-sm font-medium flex items-center gap-2"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
@@ -78,13 +78,13 @@ function Login() {
           </motion.div>
         )}
 
-        <div className="flex bg-gray-100 rounded-xl p-1 mb-6">
+        <div className="flex bg-gray-100 dark:bg-slate-900 rounded-xl p-1 mb-6">
           <button
             onClick={() => setIsLogin(true)}
             className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all ${
               isLogin
-                ? "bg-white text-green-700 shadow-md"
-                : "text-gray-500 hover:text-gray-700"
+                ? "bg-white dark:bg-slate-800 text-green-700 dark:text-green-400 shadow-md"
+                : "text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200"
             }`}
           >
             Sign In
@@ -93,8 +93,8 @@ function Login() {
             onClick={() => setIsLogin(false)}
             className={`flex-1 py-2.5 rounded-lg text-sm font-semibold transition-all ${
               !isLogin
-                ? "bg-white text-green-700 shadow-md"
-                : "text-gray-500 hover:text-gray-700"
+                ? "bg-white dark:bg-slate-800 text-green-700 dark:text-green-400 shadow-md"
+                : "text-gray-500 dark:text-slate-400 hover:text-gray-700 dark:hover:text-slate-200"
             }`}
           >
             Create Account
@@ -103,7 +103,7 @@ function Login() {
 
         <form className="space-y-5" onSubmit={handleSubmit}>
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">
               Email Address
             </label>
             <div className="relative">
@@ -117,18 +117,18 @@ function Login() {
                 name="email"
                 placeholder="you@example.com"
                 required
-                className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 dark:border-slate-700 focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-950/20 focus:border-green-500 transition bg-gray-50/50 dark:bg-slate-900/50 dark:text-white"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">
               Password
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <svg xmlns="http://www.w3.org/2050/svg" className="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                 </svg>
               </div>
@@ -137,7 +137,7 @@ function Login() {
                 name="password"
                 placeholder="••••••••"
                 required
-                className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 dark:border-slate-700 focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-950/20 focus:border-green-500 transition bg-gray-50/50 dark:bg-slate-900/50 dark:text-white"
               />
             </div>
           </div>
@@ -150,7 +150,7 @@ function Login() {
               className="overflow-hidden"
             >
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
+                <label className="block text-sm font-semibold text-gray-700 dark:text-slate-300 mb-2">
                   Full Name
                 </label>
                 <div className="relative">
@@ -162,8 +162,7 @@ function Login() {
                   <input
                     type="text"
                     placeholder="John Doe"
-                    required
-                    className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                    className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-gray-200 dark:border-slate-700 focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-950/20 focus:border-green-500 transition bg-gray-50/50 dark:bg-slate-900/50 dark:text-white"
                   />
                 </div>
               </div>
@@ -172,10 +171,10 @@ function Login() {
 
           <div className="flex items-center justify-between">
             <label className="flex items-center gap-2 cursor-pointer">
-              <input type="checkbox" className="w-4 h-4 rounded border-gray-300 text-green-600 focus:ring-green-500" />
-              <span className="text-sm text-gray-600">Remember me</span>
+              <input type="checkbox" className="w-4 h-4 rounded border-gray-300 dark:border-slate-700 text-green-600 focus:ring-green-500" />
+              <span className="text-sm text-gray-655 dark:text-slate-400">Remember me</span>
             </label>
-            <a href="#" className="text-sm text-green-600 font-semibold hover:underline">
+            <a href="#" className="text-sm text-green-605 dark:text-green-400 font-semibold hover:underline">
               Forgot password?
             </a>
           </div>
@@ -202,20 +201,20 @@ function Login() {
         <div className="mt-8">
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-200"></div>
+              <div className="w-full border-t border-gray-200 dark:border-slate-700"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-4 bg-white text-gray-500">Or continue with</span>
+              <span className="px-4 bg-white dark:bg-slate-800 text-gray-500 dark:text-slate-400">Or continue with</span>
             </div>
           </div>
 
           <div className="mt-6 grid grid-cols-2 gap-3">
-            <button className="flex items-center justify-center gap-3 border border-gray-200 rounded-xl py-2.5 text-sm font-medium bg-white hover:bg-gray-50 hover:border-gray-300 transition">
+            <button className="flex items-center justify-center gap-3 border border-gray-200 dark:border-slate-700 rounded-xl py-2.5 text-sm font-medium bg-white dark:bg-slate-900 dark:text-white hover:bg-gray-50 dark:hover:bg-slate-800 transition">
               <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" className="h-5 w-5" />
               Google
             </button>
-            <button className="flex items-center justify-center gap-3 border border-gray-200 rounded-xl py-2.5 text-sm font-medium bg-white hover:bg-gray-50 hover:border-gray-300 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+            <button className="flex items-center justify-center gap-3 border border-gray-200 dark:border-slate-700 rounded-xl py-2.5 text-sm font-medium bg-white dark:bg-slate-900 dark:text-white hover:bg-gray-50 dark:hover:bg-slate-800 transition">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-black dark:text-white" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M16.365 1.43c.03.01 3.276.96 3.26 4.078-.017 3.222-2.606 4.916-2.646 4.94-1.63.98-3.312.988-3.342.988-.03 0-1.702-.008-3.333-.988-.04-.024-2.63-1.718-2.647-4.94C7.033 2.39 10.28 1.43 10.309 1.42c1.81-.597 3.888-.558 5.1.01z" />
                 <path d="M20.7 11.8c-.07-.17-.5-1.78-1.73-3.1-.88-.92-1.95-1.44-3.18-1.5-.61 0-1.24.11-1.83.33 1.3.82 2.1 2.2 2.1 3.73 0 2.56-2.07 4.64-4.63 4.64-1.6 0-3.03-.86-3.86-2.15-.02.08-.04.17-.04.25 0 2.34 1.54 4.34 3.73 4.89 2.3.6 4.84-.1 6.39-1.9 1.68-1.95 2.67-4.7 2.67-7.49 0-.4-.02-.8-.06-1.18z" />
               </svg>
@@ -224,10 +223,10 @@ function Login() {
           </div>
         </div>
 
-        <p className="text-xs text-gray-500 text-center mt-6">
+        <p className="text-xs text-gray-500 dark:text-slate-450 text-center mt-6">
           By continuing, you agree to SmartTour's{" "}
-          <a href="#" className="text-green-600 hover:underline font-medium">Terms</a> and{" "}
-          <a href="#" className="text-green-600 hover:underline font-medium">Privacy</a>
+          <a href="#" className="text-green-600 dark:text-green-450 hover:underline font-medium">Terms</a> and{" "}
+          <a href="#" className="text-green-600 dark:text-green-450 hover:underline font-medium">Privacy</a>
         </p>
       </motion.div>
     </div>

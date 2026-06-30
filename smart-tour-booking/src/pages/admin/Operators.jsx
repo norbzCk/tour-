@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { useData } from "../../context/DataContext";
+import { useTheme } from "../../context/ThemeContext";
 import PageHeader from "../../components/admin/PageHeader";
 import SearchBar from "../../components/admin/SearchBar";
 import StatusBadge from "../../components/admin/StatusBadge";
 
 function Operators() {
   const { guides, bookings, tours, addGuide, updateGuide, deleteGuide } = useData();
+  const { isDark } = useTheme();
   const [search, setSearch] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -80,46 +82,54 @@ function Operators() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           onSubmit={handleSubmit}
-          className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-5"
+          className={`rounded-2xl shadow-sm border p-6 space-y-5 ${isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}
         >
-          <h3 className="text-lg font-bold text-gray-800">{editingId ? "Edit Guide" : "New Guide"}</h3>
+          <h3 className={`text-lg font-bold ${isDark ? "text-white" : "text-gray-800"}`}>{editingId ? "Edit Guide" : "New Guide"}</h3>
           <div className="grid md:grid-cols-2 gap-5">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Full Name *</label>
+              <label className={`block text-sm font-semibold mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>Full Name *</label>
               <input
                 type="text"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition ${
+                  isDark ? "border-gray-600 bg-gray-700 text-white" : "border-gray-200 bg-gray-50/50"
+                }`}
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Email *</label>
+              <label className={`block text-sm font-semibold mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>Email *</label>
               <input
                 type="email"
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition ${
+                  isDark ? "border-gray-600 bg-gray-700 text-white" : "border-gray-200 bg-gray-50/50"
+                }`}
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Phone</label>
+              <label className={`block text-sm font-semibold mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>Phone</label>
               <input
                 type="tel"
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition ${
+                  isDark ? "border-gray-600 bg-gray-700 text-white" : "border-gray-200 bg-gray-50/50"
+                }`}
                 placeholder="+255 712 000 000"
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Specialty</label>
+              <label className={`block text-sm font-semibold mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>Specialty</label>
               <select
                 value={form.specialty}
                 onChange={(e) => setForm({ ...form, specialty: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition ${
+                  isDark ? "border-gray-600 bg-gray-700 text-white" : "border-gray-200 bg-gray-50/50"
+                }`}
               >
                 <option>Safari</option>
                 <option>Beach</option>
@@ -129,21 +139,25 @@ function Operators() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Experience</label>
+              <label className={`block text-sm font-semibold mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>Experience</label>
               <input
                 type="text"
                 value={form.experience}
                 onChange={(e) => setForm({ ...form, experience: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition ${
+                  isDark ? "border-gray-600 bg-gray-700 text-white" : "border-gray-200 bg-gray-50/50"
+                }`}
                 placeholder="5 years"
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Status</label>
+              <label className={`block text-sm font-semibold mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>Status</label>
               <select
                 value={form.status}
                 onChange={(e) => setForm({ ...form, status: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition ${
+                  isDark ? "border-gray-600 bg-gray-700 text-white" : "border-gray-200 bg-gray-50/50"
+                }`}
               >
                 <option>Active</option>
                 <option>Inactive</option>
@@ -154,7 +168,9 @@ function Operators() {
             <button
               type="button"
               onClick={resetForm}
-              className="px-5 py-2.5 border border-gray-200 rounded-xl font-bold text-gray-700 hover:bg-gray-50 transition"
+              className={`px-5 py-2.5 border rounded-xl font-bold transition ${
+                isDark ? "border-gray-600 text-gray-300 hover:bg-gray-700" : "border-gray-200 text-gray-700 hover:bg-gray-50"
+              }`}
             >
               Cancel
             </button>
@@ -177,25 +193,25 @@ function Operators() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
-              className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-4"
+              className={`rounded-2xl shadow-sm border p-6 space-y-4 ${isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}
             >
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white font-bold text-lg">
                   {guide.name[0]}
                 </div>
                 <div>
-                  <h3 className="font-bold text-gray-900">{guide.name}</h3>
-                  <p className="text-sm text-gray-500">{guide.specialty} • {guide.experience}</p>
+                  <h3 className={`font-bold ${isDark ? "text-white" : "text-gray-900"}`}>{guide.name}</h3>
+                  <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-500"}`}>{guide.specialty} • {guide.experience}</p>
                 </div>
                 <div className="ml-auto">
                   <StatusBadge status={guide.status} />
                 </div>
               </div>
-              <p className="text-sm text-gray-600">{guide.email}</p>
-              <p className="text-sm text-gray-600">{guide.phone || "No phone"}</p>
+              <p className={`text-sm ${isDark ? "text-gray-300" : "text-gray-600"}`}>{guide.email}</p>
+              <p className={`text-sm ${isDark ? "text-gray-300" : "text-gray-600"}`}>{guide.phone || "No phone"}</p>
               <div className="flex gap-4 text-sm">
-                <span className="text-gray-500">Tours: <strong className="text-gray-800">{stats.assignedTours}</strong></span>
-                <span className="text-gray-500">Bookings: <strong className="text-gray-800">{stats.relatedBookings}</strong></span>
+                <span className={isDark ? "text-gray-400" : "text-gray-500"}>Tours: <strong className={isDark ? "text-gray-200" : "text-gray-800"}>{stats.assignedTours}</strong></span>
+                <span className={isDark ? "text-gray-400" : "text-gray-500"}>Bookings: <strong className={isDark ? "text-gray-200" : "text-gray-800"}>{stats.relatedBookings}</strong></span>
               </div>
               <div className="flex gap-2 pt-2">
                 <button
@@ -218,7 +234,7 @@ function Operators() {
 
       {filtered.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">No guides found matching your search.</p>
+          <p className={`text-lg ${isDark ? "text-gray-400" : "text-gray-500"}`}>No guides found matching your search.</p>
         </div>
       )}
     </motion.div>

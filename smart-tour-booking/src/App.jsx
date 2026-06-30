@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { DataProvider } from "./context/DataContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import { ToastProvider } from "./components/ToastProvider";
 import Navbar from "./components/Navbar";
 
@@ -13,6 +14,12 @@ import TourDetails from "./pages/TourDetails";
 import Booking from "./pages/Booking";
 import MyBookings from "./pages/MyBookings";
 import Profile from "./pages/Profile";
+import Destinations from "./pages/Destinations";
+import TravelTips from "./pages/TravelTips";
+import About from "./pages/About";
+import Planner from "./pages/Planner";
+import Privacy from "./pages/Privacy";
+import Terms from "./pages/Terms";
 
 import { Link } from "react-router-dom";
 
@@ -126,6 +133,12 @@ function AppRoutes() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/tours" element={<Tours />} />
+      <Route path="/destinations" element={<Destinations />} />
+      <Route path="/travel-tips" element={<TravelTips />} />
+      <Route path="/about" element={<About />} />
+      <Route path="/planner" element={<Planner />} />
+      <Route path="/privacy" element={<Privacy />} />
+      <Route path="/terms" element={<Terms />} />
       <Route path="/tour/:id" element={<TourDetails />} />
       <Route path="/booking/:id" element={
         <BookingRoute>
@@ -174,17 +187,19 @@ function AppRoutes() {
 
 function App() {
   return (
-    <AuthProvider>
-      <DataProvider>
-        <ToastProvider>
-          <BrowserRouter>
-            <Navbar />
-            <AppRoutes />
-            <Footer />
-          </BrowserRouter>
-        </ToastProvider>
-      </DataProvider>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <DataProvider>
+          <ToastProvider>
+            <BrowserRouter>
+              <Navbar />
+              <AppRoutes />
+              <Footer />
+            </BrowserRouter>
+          </ToastProvider>
+        </DataProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
 

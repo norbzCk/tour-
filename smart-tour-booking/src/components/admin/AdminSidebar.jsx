@@ -10,9 +10,11 @@ import {
   FaCalendarAlt,
 } from "react-icons/fa";
 import { useAuth } from "../../context/AuthContext";
+import { useTheme } from "../../context/ThemeContext";
 
 function AdminSidebar() {
   const { logout } = useAuth();
+  const { isDark } = useTheme();
 
   const navItems = [
     { to: "/admin", icon: FaTachometerAlt, label: "Dashboard" },
@@ -25,15 +27,15 @@ function AdminSidebar() {
   ];
 
   return (
-    <aside className="w-72 bg-white shadow-xl min-h-screen flex flex-col">
-      <div className="p-6 border-b border-gray-100">
+    <aside className={`w-72 shadow-xl min-h-screen flex flex-col transition-colors duration-300 ${isDark ? "bg-gray-800 border-r border-gray-700" : "bg-white"}`}>
+      <div className={`p-6 border-b ${isDark ? "border-gray-700" : "border-gray-100"}`}>
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-md">
             <span className="text-white font-extrabold text-lg">S</span>
           </div>
           <div>
-            <h2 className="text-xl font-extrabold text-gray-900">SmartTour</h2>
-            <p className="text-xs text-gray-500 font-medium">Admin Panel</p>
+            <h2 className={`text-xl font-extrabold ${isDark ? "text-white" : "text-gray-900"}`}>SmartTour</h2>
+            <p className={`text-xs font-medium ${isDark ? "text-gray-400" : "text-gray-500"}`}>Admin Panel</p>
           </div>
         </div>
       </div>
@@ -47,7 +49,11 @@ function AdminSidebar() {
             className={({ isActive }) =>
               `flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
                 isActive
-                  ? "bg-green-50 text-green-700 shadow-sm"
+                  ? isDark
+                    ? "bg-green-900/50 text-green-400 shadow-sm"
+                    : "bg-green-50 text-green-700 shadow-sm"
+                  : isDark
+                  ? "text-gray-400 hover:bg-gray-700 hover:text-white"
                   : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
               }`
             }
@@ -58,10 +64,12 @@ function AdminSidebar() {
         ))}
       </nav>
 
-      <div className="p-4 border-t border-gray-100">
+      <div className={`p-4 border-t ${isDark ? "border-gray-700" : "border-gray-100"}`}>
         <button
           onClick={logout}
-          className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-red-600 hover:bg-red-50 transition w-full"
+          className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition w-full ${
+            isDark ? "text-red-400 hover:bg-red-900/30" : "text-red-600 hover:bg-red-50"
+          }`}
         >
           <FaSignOutAlt className="w-5 h-5" />
           Sign Out

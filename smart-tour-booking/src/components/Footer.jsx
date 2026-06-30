@@ -1,102 +1,125 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useTheme } from "../context/ThemeContext";
 
 function Footer() {
+  const { isDark } = useTheme();
+
   return (
-    <footer className="relative bg-gradient-to-br from-gray-900 via-gray-950 to-black text-white">
-      <div className="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-4 gap-12">
-        <div className="md:col-span-1">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="flex items-center gap-3 mb-6"
-          >
+    <footer className={`relative transition-colors duration-300 ${isDark ? "bg-slate-950 text-gray-300" : "bg-gray-50 text-gray-600"}`}>
+      <div className="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+        {/* Brand */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="md:col-span-1"
+        >
+          <Link to="/" className="flex items-center gap-3 mb-6">
             <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center shadow-lg">
               <span className="text-white font-extrabold text-xl">S</span>
             </div>
-            <span className="text-2xl font-extrabold">SmartTour</span>
-          </motion.div>
-          <p className="text-gray-400 text-sm leading-relaxed mb-6">
+            <span className={`text-2xl font-extrabold ${isDark ? "text-white" : "text-gray-900"}`}>SmartTour</span>
+          </Link>
+          <p className={`text-sm leading-relaxed mb-6 ${isDark ? "text-gray-400" : "text-gray-500"}`}>
             Tanzania's premier tour booking platform. Discover breathtaking destinations, book unforgettable experiences, and create memories that last a lifetime.
           </p>
           <div className="flex gap-3">
             {["🌐", "📱", "📧"].map((icon, i) => (
-              <div key={i} className="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-lg hover:bg-green-600 transition cursor-pointer">
+              <div key={i} className={`w-10 h-10 rounded-full flex items-center justify-center text-lg cursor-pointer transition ${
+                isDark ? "bg-slate-800 hover:bg-green-600 text-gray-300" : "bg-white hover:bg-green-600 text-gray-600 shadow-sm"
+              }`}>
                 {icon}
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
+        {/* Explore */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.1 }}
         >
-          <h4 className="font-bold text-white mb-5 text-lg">Company</h4>
+          <h4 className={`font-bold mb-5 text-lg ${isDark ? "text-white" : "text-gray-900"}`}>Explore</h4>
           <ul className="space-y-3">
-            {["About Us", "Careers", "Blog", "Press", "Partners"].map((item) => (
-              <li key={item}>
-                <Link to="/" className="text-gray-400 text-sm hover:text-green-400 transition-colors inline-block hover:translate-x-1 transition-transform">
-                  {item}
+            {[
+              { to: "/tours", label: "Browse Tours" },
+              { to: "/destinations", label: "Destinations" },
+              { to: "/travel-tips", label: "Travel Tips" },
+              { to: "/planner", label: "Trip Planner" },
+              { to: "/about", label: "About Us" },
+            ].map((item) => (
+              <li key={item.label}>
+                <Link to={item.to} className={`text-sm hover:text-green-500 transition-colors inline-block ${isDark ? "text-gray-400" : "text-gray-500"}`}>
+                  {item.label}
                 </Link>
               </li>
             ))}
           </ul>
         </motion.div>
 
+        {/* Support */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.2 }}
         >
-          <h4 className="font-bold text-white mb-5 text-lg">Support</h4>
+          <h4 className={`font-bold mb-5 text-lg ${isDark ? "text-white" : "text-gray-900"}`}>Support</h4>
           <ul className="space-y-3">
-            {["Help Center", "Contact Us", "Safety Center", "Terms of Service", "Privacy Policy"].map((item) => (
-              <li key={item}>
-                <Link to="/" className="text-gray-400 text-sm hover:text-green-400 transition-colors inline-block hover:translate-x-1 transition-transform">
-                  {item}
+            {[
+              { to: "/about", label: "Help Center" },
+              { to: "/about", label: "Contact Us" },
+              { to: "/travel-tips", label: "Safety Tips" },
+              { to: "/privacy", label: "Privacy Policy" },
+              { to: "/terms", label: "Terms of Service" },
+            ].map((item) => (
+              <li key={item.label}>
+                <Link to={item.to} className={`text-sm hover:text-green-500 transition-colors inline-block ${isDark ? "text-gray-400" : "text-gray-500"}`}>
+                  {item.label}
                 </Link>
               </li>
             ))}
           </ul>
         </motion.div>
 
+        {/* Newsletter */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 }}
         >
-          <h4 className="font-bold text-white mb-5 text-lg">Newsletter</h4>
-          <p className="text-gray-400 text-sm mb-4">
+          <h4 className={`font-bold mb-5 text-lg ${isDark ? "text-white" : "text-gray-900"}`}>Stay Updated</h4>
+          <p className={`text-sm mb-4 ${isDark ? "text-gray-400" : "text-gray-500"}`}>
             Subscribe for exclusive travel deals, destination guides, and insider tips.
           </p>
           <div className="flex gap-2">
             <input
               type="email"
               placeholder="Enter your email"
-              className="flex-1 px-4 py-3 rounded-xl bg-gray-800 border border-gray-700 text-sm text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+              className={`flex-1 px-4 py-3 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition ${
+                isDark ? "bg-slate-800 border border-slate-700 text-white placeholder-gray-500" : "bg-white border border-gray-200 text-gray-900 placeholder-gray-400"
+              }`}
             />
-            <button className="px-5 py-3 bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl font-semibold text-sm hover:shadow-lg hover:shadow-green-500/30 transition transform hover:-translate-y-0.5">
+            <button className="px-5 py-3 bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl font-semibold text-sm text-white hover:shadow-lg hover:shadow-green-500/30 transition transform hover:-translate-y-0.5">
               Subscribe
             </button>
           </div>
         </motion.div>
       </div>
 
-      <div className="border-t border-gray-800/50">
+      <div className={`border-t ${isDark ? "border-slate-800" : "border-gray-200"}`}>
         <div className="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-gray-500 text-sm">
+          <p className={`text-sm ${isDark ? "text-gray-500" : "text-gray-400"}`}>
             © 2026 SmartTour. All rights reserved. • Made with ❤️ in Tanzania
           </p>
           <div className="flex items-center gap-6 text-sm">
-            <Link to="/" className="text-gray-500 hover:text-green-400 transition-colors">Privacy</Link>
-            <Link to="/" className="text-gray-500 hover:text-green-400 transition-colors">Terms</Link>
-            <Link to="/" className="text-gray-500 hover:text-green-400 transition-colors">Sitemap</Link>
+            <Link to="/privacy" className={`hover:text-green-500 transition-colors ${isDark ? "text-gray-500" : "text-gray-400"}`}>Privacy</Link>
+            <Link to="/terms" className={`hover:text-green-500 transition-colors ${isDark ? "text-gray-500" : "text-gray-400"}`}>Terms</Link>
+            <Link to="/" className={`hover:text-green-500 transition-colors ${isDark ? "text-gray-500" : "text-gray-400"}`}>Sitemap</Link>
           </div>
         </div>
       </div>

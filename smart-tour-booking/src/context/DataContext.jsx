@@ -1,9 +1,31 @@
 import { createContext, useContext, useState, useCallback } from "react";
 import toursData from "../data/tours";
+import { paymentService } from "../services/paymentService";
+import { notificationService } from "../services/notificationService";
+import { bookingService } from "../services/bookingService";
 
 const DataContext = createContext(null);
 
 const USD_TO_TZS = 2500;
+
+const initialNotifications = [
+  {
+    id: 1,
+    userEmail: "sarah@example.com",
+    title: "Welcome to SmartTour!",
+    content: "Explore Serengeti Safaris, Zanzibar beaches, and much more. Plan your dream tour today!",
+    isRead: false,
+    createdAt: new Date(Date.now() - 3600000).toISOString().slice(0, 16).replace("T", " "),
+  },
+  {
+    id: 2,
+    userEmail: "james@example.com",
+    title: "Welcome to SmartTour!",
+    content: "Browse our handpicked tours and enjoy a seamless Tanzanian booking experience.",
+    isRead: true,
+    createdAt: new Date(Date.now() - 7200000).toISOString().slice(0, 16).replace("T", " "),
+  },
+];
 
 const initialUsers = [
   { id: 1, name: "Admin User", email: "admin@example.com", phone: "+255 712 000 001", role: "admin", joinedAt: "2025-01-15" },
@@ -46,6 +68,7 @@ function DataProvider({ children }) {
   const [users, setUsers] = useState(initialUsers);
   const [guides, setGuides] = useState(initialGuides);
   const [logs, setLogs] = useState(initialLogs);
+  const [notifications, setNotifications] = useState(initialNotifications);
   const [nextId, setNextId] = useState(100);
 
   const addLog = useCallback((action, user, details) => {
@@ -59,6 +82,41 @@ function DataProvider({ children }) {
     setLogs((prev) => [log, ...prev]);
     setNextId((prev) => prev + 1);
   }, [nextId]);
+
+  const addNotification = useCallback((userEmail, title, content) => {
+    setNotifications((prev) => [
+      {
+        id: Date.now() + Math.random(),
+        userEmail,
+        title,
+        content,
+        isRead: false,
+        createdAt: new Date().toISOString().slice(0, 16).replace("T", " ")
+      },
+      ...prev
+    ]);
+  }, []);
+
+  const markNotificationAsRead = useCallback((id) => {
+    setNotifications((prev) =>
+      prev.map((n) => (n.id === id ? { ...n, isRead: true } : n))
+    );
+  }, []);
+
+  const markAllNotificationsAsRead = useCallback((userEmail) => {
+    setNotifications((prev) =>
+      prev.map((n) => (n.userEmail === userEmail ? { ...n, isRead: true } : n))
+    );
+  }, []);
+
+  const confirmBookingByWorker = useCallback((bookingId, status, guideId) => {
+    setBookings((prev) =>
+      prev.map((b) => (b.id === bookingId ? { ...b, status, guideId } : b))
+    );
+    // Find the guide name for logs
+    const guide = guides.find((g) => g.id === guideId);
+    addLog("Booking Confirmed", "system", `Background worker auto-confirmed booking ID: ${bookingId} and assigned guide ${guide?.name || "guide"}`);
+  }, [guides, addLog]);
 
   const addTour = useCallback((tour) => {
     const newTour = { ...tour, id: nextId, rating: 4.5 };
@@ -85,6 +143,8 @@ function DataProvider({ children }) {
   }, [guides, addLog]);
 
   const addBooking = useCallback((booking) => {
+    const transactionId = booking.transactionId || paymentService.generateTransactionId();
+
     const newBooking = {
       ...booking,
       id: nextId,
@@ -93,12 +153,42 @@ function DataProvider({ children }) {
       paymentMethod: booking.paymentMethod || "MPESA",
       createdAt: new Date().toISOString().slice(0, 10),
       amountUSD: booking.amountUSD || Math.round(booking.amount / USD_TO_TZS),
+      transactionId,
     };
     setBookings((prev) => [...prev, newBooking]);
-    addLog("Booking Created", booking.userEmail || "system", `Booked ${booking.tourTitle}`);
+    addLog("Booking Created", booking.userEmail || "system", `Booked ${booking.tourTitle} | Transaction: ${transactionId}`);
     setNextId((prev) => prev + 1);
+
+    // Trigger SMS Service Simulation
+    notificationService.triggerBookingSms(
+      booking.phone || "+255 712 345 678",
+      booking.tourTitle,
+      booking.amount,
+      transactionId
+    );
+
+    // Create in-app notifications
+    addNotification(
+      booking.userEmail,
+      "💳 Payment Received",
+      `Payment of ${formatTZS(booking.amount)} confirmed via M-Pesa. Transaction ID: ${transactionId}`
+    );
+    addNotification(
+      booking.userEmail,
+      "⏳ Booking Pending Confirmation",
+      `Your booking for ${booking.tourTitle} is being reviewed by the confirmation microservice.`
+    );
+
+    // Trigger Background approval microservice simulation
+    bookingService.startBackgroundApprovalWorker(
+      newBooking,
+      guides,
+      confirmBookingByWorker,
+      addNotification
+    );
+
     return newBooking;
-  }, [nextId, addLog]);
+  }, [nextId, addLog, guides, addNotification, confirmBookingByWorker]);
 
   const updateBookingStatus = useCallback((id, status) => {
     setBookings((prev) => prev.map((b) => (b.id === id ? { ...b, status } : b)));
@@ -160,6 +250,7 @@ function DataProvider({ children }) {
     users, addUser, updateUser, deleteUser, findUserByEmail,
     guides, addGuide, updateGuide, deleteGuide, findGuideByEmail,
     logs, addLog,
+    notifications, addNotification, markNotificationAsRead, markAllNotificationsAsRead,
     formatTZS, USD_TO_TZS,
   };
 

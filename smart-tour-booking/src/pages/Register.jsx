@@ -69,12 +69,12 @@ function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-emerald-100 px-4 py-12">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-emerald-100 dark:from-gray-900 dark:via-gray-900 dark:to-gray-800 px-4 py-12 transition-colors duration-300">
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="w-full max-w-md bg-white/80 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/50"
+        className="w-full max-w-md bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/50 dark:border-gray-700/50"
       >
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl shadow-lg mb-4">
@@ -82,8 +82,8 @@ function Register() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
             </svg>
           </div>
-          <h1 className="text-3xl font-extrabold text-gray-900">Join SmartTour</h1>
-          <p className="text-sm text-gray-500 mt-2">
+          <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white">Join SmartTour</h1>
+          <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
             Create your account and start exploring Tanzania
           </p>
         </div>
@@ -95,7 +95,7 @@ function Register() {
                 className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
                   s <= step
                     ? "bg-green-600 text-white"
-                    : "bg-gray-200 text-gray-500"
+                    : "bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400"
                 }`}
               >
                 {s}
@@ -103,7 +103,7 @@ function Register() {
               {s < 3 && (
                 <div
                   className={`h-1 w-12 rounded-full transition-all ${
-                    s < step ? "bg-green-600" : "bg-gray-200"
+                    s < step ? "bg-green-600" : "bg-gray-200 dark:bg-gray-700"
                   }`}
                 />
               )}
@@ -111,18 +111,18 @@ function Register() {
           ))}
         </div>
 
-        {error && (
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-6 p-4 rounded-xl bg-red-50 border border-red-100 text-red-700 text-sm font-medium flex items-center gap-2"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-            </svg>
-            {error}
-          </motion.div>
-        )}
+    {error && (
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-900/30 border border-red-100 dark:border-red-800 text-red-700 dark:text-red-300 text-sm font-medium flex items-center gap-2"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+        </svg>
+        {error}
+      </motion.div>
+    )}
 
         <form className="space-y-5" onSubmit={handleSubmit}>
           {step === 1 && (
@@ -132,36 +132,36 @@ function Register() {
               className="space-y-4"
             >
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Full Name</label>
                 <input
                   type="text"
                   placeholder="John Doe"
                   required
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition bg-gray-50/50 dark:bg-gray-700/50 dark:text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Email Address</label>
                 <input
                   type="email"
                   name="email"
                   placeholder="you@example.com"
                   required
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition bg-gray-50/50 dark:bg-gray-700/50 dark:text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Phone Number</label>
                 <input
                   type="tel"
                   placeholder="+255 712 345 678"
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition bg-gray-50/50 dark:bg-gray-700/50 dark:text-white"
                 />
               </div>
               <button
                 type="button"
                 onClick={() => setStep(2)}
-                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-green-200 transition"
+                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-green-200 dark:hover:shadow-green-900/20 transition"
               >
                 Continue
               </button>
@@ -175,30 +175,30 @@ function Register() {
               className="space-y-4"
             >
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Password</label>
                 <input
                   type="password"
                   name="password"
                   placeholder="••••••••"
                   required
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition bg-gray-50/50 dark:bg-gray-700/50 dark:text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Confirm Password</label>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Confirm Password</label>
                 <input
                   type="password"
                   placeholder="••••••••"
                   required
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition bg-gray-50/50 dark:bg-gray-700/50 dark:text-white"
                 />
               </div>
               <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">I am a</label>
+                <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">I am a</label>
                 <select
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition bg-gray-50/50 dark:bg-gray-700/50 dark:text-white"
                 >
                   <option value="tourist">Tourist</option>
                   <option value="operator">Tour Operator</option>
@@ -208,14 +208,14 @@ function Register() {
                  <button
                    type="button"
                    onClick={() => setStep(1)}
-                   className="flex-1 border border-gray-200 text-gray-700 py-3.5 rounded-xl font-bold hover:bg-gray-50 transition"
+                   className="flex-1 border border-gray-200 dark:border-gray-600 text-gray-700 dark:text-gray-300 py-3.5 rounded-xl font-bold hover:bg-gray-50 dark:hover:bg-gray-700 transition"
                  >
                    Back
                  </button>
                  <button
                    type="submit"
                    disabled={loading}
-                   className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-green-200 transition disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                   className="flex-1 bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-green-200 dark:hover:shadow-green-900/20 transition disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                  >
                    {loading ? (
                      <>
@@ -239,13 +239,13 @@ function Register() {
               animate={{ opacity: 1, scale: 1 }}
               className="text-center py-8"
             >
-              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <div className="w-20 h-20 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center mx-auto mb-6">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-green-600 dark:text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Welcome Aboard!</h3>
-              <p className="text-gray-600 mb-6">Your account has been created successfully.</p>
+              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">Welcome Aboard!</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-6">Your account has been created successfully.</p>
               <Link
                 to="/tours"
                 className="inline-block bg-gradient-to-r from-green-600 to-emerald-600 text-white px-8 py-3 rounded-xl font-bold hover:shadow-lg transition"

@@ -1,11 +1,13 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { useData } from "../../context/DataContext";
+import { useTheme } from "../../context/ThemeContext";
 import PageHeader from "../../components/admin/PageHeader";
 import SearchBar from "../../components/admin/SearchBar";
 
 function ToursAdmin() {
   const { tours, guides, addTour, updateTour, deleteTour, assignGuide, formatTZS } = useData();
+  const { isDark } = useTheme();
   const [search, setSearch] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [editingId, setEditingId] = useState(null);
@@ -123,49 +125,55 @@ function ToursAdmin() {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           onSubmit={handleSubmit}
-          className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 space-y-5"
+          className={`rounded-2xl shadow-sm border p-6 space-y-5 ${isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}
         >
-          <h3 className="text-lg font-bold text-gray-800">{editingId ? "Edit Tour" : "New Tour"}</h3>
+          <h3 className={`text-lg font-bold ${isDark ? "text-white" : "text-gray-800"}`}>{editingId ? "Edit Tour" : "New Tour"}</h3>
           <div className="grid md:grid-cols-2 gap-5">
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Title *</label>
+              <label className={`block text-sm font-semibold mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>Title *</label>
               <input
                 type="text"
                 value={form.title}
                 onChange={handleTitleChange}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition ${
+                  isDark ? "border-gray-600 bg-gray-700 text-white" : "border-gray-200 bg-gray-50/50"
+                }`}
                 placeholder="Tour title"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">URL Slug</label>
+              <label className={`block text-sm font-semibold mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>URL Slug</label>
               <input
                 type="text"
                 value={form.slug}
                 readOnly
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-100 text-gray-600 text-sm"
+                className={`w-full px-4 py-3 rounded-xl border text-sm ${isDark ? "border-gray-600 bg-gray-900 text-gray-400" : "border-gray-200 bg-gray-100 text-gray-600"}`}
                 placeholder="auto-generated-slug"
               />
-              <p className="text-xs text-gray-400 mt-1">Auto-generated from title for tour links</p>
+              <p className={`text-xs mt-1 ${isDark ? "text-gray-500" : "text-gray-400"}`}>Auto-generated from title for tour links</p>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Destination *</label>
+              <label className={`block text-sm font-semibold mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>Destination *</label>
               <input
                 type="text"
                 value={form.destination}
                 onChange={(e) => setForm({ ...form, destination: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition ${
+                  isDark ? "border-gray-600 bg-gray-700 text-white" : "border-gray-200 bg-gray-50/50"
+                }`}
                 placeholder="e.g., Zanzibar"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Category</label>
+              <label className={`block text-sm font-semibold mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>Category</label>
               <select
                 value={form.category}
                 onChange={(e) => setForm({ ...form, category: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition ${
+                  isDark ? "border-gray-600 bg-gray-700 text-white" : "border-gray-200 bg-gray-50/50"
+                }`}
               >
                 <option>Safari</option>
                 <option>Beach</option>
@@ -175,38 +183,44 @@ function ToursAdmin() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Price (TZS) *</label>
+              <label className={`block text-sm font-semibold mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>Price (TZS) *</label>
               <input
                 type="number"
                 value={form.price}
                 onChange={(e) => setForm({ ...form, price: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition ${
+                  isDark ? "border-gray-600 bg-gray-700 text-white" : "border-gray-200 bg-gray-50/50"
+                }`}
                 placeholder="799000"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Duration *</label>
+              <label className={`block text-sm font-semibold mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>Duration *</label>
               <input
                 type="text"
                 value={form.duration}
                 onChange={(e) => setForm({ ...form, duration: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition ${
+                  isDark ? "border-gray-600 bg-gray-700 text-white" : "border-gray-200 bg-gray-50/50"
+                }`}
                 placeholder="7 Days"
                 required
               />
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Cover Image</label>
+              <label className={`block text-sm font-semibold mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>Cover Image</label>
               <input
                 ref={fileInputRef}
                 type="file"
                 accept="image/*"
                 onChange={handleImageUpload}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50 text-sm"
+                className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition text-sm ${
+                  isDark ? "border-gray-600 bg-gray-700 text-white" : "border-gray-200 bg-gray-50/50"
+                }`}
               />
               {form.image && (
-                <div className="mt-3 relative w-full h-32 rounded-xl overflow-hidden border border-gray-200">
+                <div className="mt-3 relative w-full h-32 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-600">
                   <img src={form.image} alt="Preview" className="w-full h-full object-cover" />
                   <button
                     type="button"
@@ -217,14 +231,16 @@ function ToursAdmin() {
                   </button>
                 </div>
               )}
-              <p className="text-xs text-gray-400 mt-1">Upload an image or leave blank for default</p>
+              <p className={`text-xs mt-1 ${isDark ? "text-gray-500" : "text-gray-400"}`}>Upload an image or leave blank for default</p>
             </div>
             <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Assign Tour Guide</label>
+              <label className={`block text-sm font-semibold mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>Assign Tour Guide</label>
               <select
                 value={form.guideId}
                 onChange={(e) => setForm({ ...form, guideId: e.target.value })}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50"
+                className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition ${
+                  isDark ? "border-gray-600 bg-gray-700 text-white" : "border-gray-200 bg-gray-50/50"
+                }`}
               >
                 <option value="">Unassigned</option>
                 {guides.map((g) => (
@@ -234,12 +250,14 @@ function ToursAdmin() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">Description</label>
+            <label className={`block text-sm font-semibold mb-2 ${isDark ? "text-gray-300" : "text-gray-700"}`}>Description</label>
             <textarea
               value={form.description}
               onChange={(e) => setForm({ ...form, description: e.target.value })}
               rows={3}
-              className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:outline-none focus:ring-4 focus:ring-green-100 focus:border-green-500 transition bg-gray-50/50 resize-none"
+              className={`w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition resize-none ${
+                isDark ? "border-gray-600 bg-gray-700 text-white" : "border-gray-200 bg-gray-50/50"
+              }`}
               placeholder="Tour description..."
             />
           </div>
@@ -247,7 +265,9 @@ function ToursAdmin() {
             <button
               type="button"
               onClick={resetForm}
-              className="px-5 py-2.5 border border-gray-200 rounded-xl font-bold text-gray-700 hover:bg-gray-50 transition"
+              className={`px-5 py-2.5 border rounded-xl font-bold transition ${
+                isDark ? "border-gray-600 text-gray-300 hover:bg-gray-700" : "border-gray-200 text-gray-700 hover:bg-gray-50"
+              }`}
             >
               Cancel
             </button>
@@ -268,30 +288,34 @@ function ToursAdmin() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.05 }}
-            className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
+            className={`rounded-2xl shadow-sm border overflow-hidden ${isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}
           >
             <div className="relative h-40">
               <img src={tour.image} alt={tour.title} className="w-full h-full object-cover" />
               <div className="absolute top-3 left-3">
-                <span className="px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-xs font-bold text-green-700">
+                <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                  isDark ? "bg-gray-800/90 text-green-300" : "bg-white/90 text-green-700"
+                }`}>
                   {tour.category}
                 </span>
               </div>
             </div>
             <div className="p-5 space-y-3">
-              <h3 className="font-bold text-lg text-gray-900 truncate">{tour.title}</h3>
-              <p className="text-sm text-gray-600">📍 {tour.destination} • ⏱ {tour.duration}</p>
-              <p className="text-xs text-gray-500 line-clamp-2">{tour.description}</p>
+              <h3 className={`font-bold text-lg truncate ${isDark ? "text-white" : "text-gray-900"}`}>{tour.title}</h3>
+              <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-600"}`}>📍 {tour.destination} • ⏱ {tour.duration}</p>
+              <p className={`text-xs line-clamp-2 ${isDark ? "text-gray-500" : "text-gray-500"}`}>{tour.description}</p>
               <div className="flex items-center justify-between pt-2">
-                <span className="text-xl font-extrabold text-green-700">{formatTZS(tour.price)}</span>
-                <span className="text-xs text-gray-500">★ {tour.rating}</span>
+                <span className={`text-xl font-extrabold text-green-700 dark:text-green-400`}>{formatTZS(tour.price)}</span>
+                <span className={`text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>★ {tour.rating}</span>
               </div>
               <div className="mb-2">
-                <label className="block text-xs font-semibold text-gray-600 mb-1">Guide:</label>
+                <label className={`block text-xs font-semibold mb-1 ${isDark ? "text-gray-300" : "text-gray-600"}`}>Guide:</label>
                 <select
                   value={tour.guideId ? tour.guideId.toString() : ""}
                   onChange={(e) => handleAssignGuide(tour.id, e.target.value)}
-                  className="w-full px-3 py-2 rounded-lg border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-green-100 bg-gray-50/50"
+                  className={`w-full px-3 py-2 rounded-lg border text-sm focus:outline-none focus:ring-2 focus:ring-green-100 dark:focus:ring-green-900/50 ${
+                    isDark ? "border-gray-600 bg-gray-700 text-white" : "border-gray-200 bg-gray-50/50"
+                  }`}
                 >
                   <option value="">Select guide...</option>
                   {guides.filter((g) => g.status === "Active").map((g) => (
@@ -322,7 +346,7 @@ function ToursAdmin() {
 
       {filtered.length === 0 && (
         <div className="text-center py-12">
-          <p className="text-gray-500 text-lg">No tours found matching your search.</p>
+          <p className={`text-lg ${isDark ? "text-gray-400" : "text-gray-500"}`}>No tours found matching your search.</p>
         </div>
       )}
     </motion.div>

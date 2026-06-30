@@ -1,19 +1,32 @@
+import { useTheme } from "../../context/ThemeContext";
+
 function StatusBadge({ status }) {
+  const { isDark } = useTheme();
   const styles = {
     Approved:
-      "bg-green-100 text-green-700",
+      isDark
+        ? "bg-green-900/50 text-green-300"
+        : "bg-green-100 text-green-700",
 
     Pending:
-      "bg-yellow-100 text-yellow-700",
+      isDark
+        ? "bg-amber-900/50 text-amber-300"
+        : "bg-yellow-100 text-yellow-700",
 
     Rejected:
-      "bg-red-100 text-red-700",
+      isDark
+        ? "bg-red-900/50 text-red-300"
+        : "bg-red-100 text-red-700",
 
     Active:
-      "bg-green-100 text-green-700",
+      isDark
+        ? "bg-green-900/50 text-green-300"
+        : "bg-green-100 text-green-700",
 
     Suspended:
-      "bg-red-100 text-red-700",
+      isDark
+        ? "bg-red-900/50 text-red-300"
+        : "bg-red-100 text-red-700",
   };
 
   return (
@@ -24,7 +37,7 @@ function StatusBadge({ status }) {
       rounded-full
       text-sm
       font-medium
-      ${styles[status]}
+      ${styles[status] || (isDark ? "bg-gray-700 text-gray-300" : "bg-gray-100 text-gray-700")}
       `}
     >
       {status}
