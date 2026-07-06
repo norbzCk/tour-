@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import { useData } from "../context/DataContext";
 import { useState } from "react";
@@ -8,12 +8,14 @@ function TourDetails() {
   const { id } = useParams();
   const { user } = useAuth();
   const { tours, formatTZS } = useData();
-  const tour = tours.find((t) => t.id === Number(id));
+  const tourId = id ? Number(id) : null;
 
-  const [activeImage, setActiveImage] = useState(tour ? tour.image : "");
+  const tour = tours.find((t) => t.id === tourId);
+
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  if (!tour) {
+  if (!id || !tour) {
+    const invalidId = id && isNaN(Number(id));
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-900 transition-colors">
         <motion.div
@@ -26,8 +28,15 @@ function TourDetails() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.466 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Tour Not Found</h1>
-          <p className="text-gray-600 dark:text-slate-400 mb-6">The tour you're looking for doesn't exist.</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            {invalidId ? "Invalid Tour ID" : "Tour Not Found"}
+          </h1>
+          <p className="text-gray-600 dark:text-slate-400 mb-6">
+            {invalidId 
+              ? `The tour ID "${id}" is not valid. Please check the URL and try again.`
+              : "The tour you're looking for doesn't exist or may have been removed."
+            }
+          </p>
           <Link to="/tours" className="inline-block bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2.5 rounded-xl font-bold hover:shadow-lg transition">
             Browse All Tours
           </Link>
@@ -58,6 +67,9 @@ function TourDetails() {
           initial={{ opacity: 0, scale: 1.05 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6 }}
+          onError={(e) => {
+            e.target.src = "https://images.unsplash.com/photo-1516426122078-c23e76319801";
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/40 to-transparent"></div>
 
@@ -143,12 +155,16 @@ function TourDetails() {
                   {gallery.map((img, idx) => (
                     <motion.button
                       key={idx}
-                      onClick={() => { setActiveImage(img); setCurrentIndex(idx); }}
+                      onClick={() => setCurrentIndex(idx)}
                       className="relative w-24 h-16 rounded-xl overflow-hidden flex-shrink-0 border-2 transition"
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.98 }}
                     >
-                      <img src={img} alt={`Gallery ${idx + 1}`} className="w-full h-full object-cover" />
+                      <img src={img} alt={`Gallery ${idx + 1}`} className="w-full h-full object-cover" 
+                         onError={(e) => {
+                           e.target.src = "https://images.unsplash.com/photo-1516426122078-c23e76319801";
+                         }}
+                       />
                       <div className={`absolute inset-0 transition-all duration-300 ${
                         currentIndex === idx
                           ? "bg-transparent border-green-500 shadow-lg shadow-green-500/30"

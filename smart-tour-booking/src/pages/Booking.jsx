@@ -8,7 +8,7 @@ import MpesaSimulator from "../components/MpesaSimulator";
 
 function Booking() {
   const { id } = useParams();
-  const tourId = parseInt(id);
+  const tourId = id ? parseInt(id, 10) : null;
   const { tours, addBooking, formatTZS, USD_TO_TZS } = useData();
   const { user } = useAuth();
   const { addToast } = useToast();
@@ -20,17 +20,15 @@ function Booking() {
   const [paymentSession, setPaymentSession] = useState(null);
 
   useEffect(() => {
-    if (!user) {
+    if (!user && !success) {
       const from = location?.state?.from || `/booking/${id}`;
       navigate("/login", { state: { from } });
     }
-  }, [user, navigate, location?.state, id]);
+  }, [user, navigate, location?.state, id, success]);
 
   const tour = tours.find((t) => t.id === tourId);
-  const tzsAmount = tour ? tour.price * travelers : 0;
-  const usdAmount = tour ? Math.round(tzsAmount / USD_TO_TZS) : 0;
 
-  if (!tour) {
+  if (!id || isNaN(tourId) || !tour) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-slate-900 transition-colors">
         <motion.div
@@ -43,8 +41,15 @@ function Booking() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.466 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Tour Not Found</h1>
-          <p className="text-gray-600 dark:text-slate-450 mb-6">The requested tour could not be found.</p>
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            {(!id || isNaN(tourId)) ? "Invalid Tour ID" : "Tour Not Found"}
+          </h1>
+          <p className="text-gray-600 dark:text-slate-450 mb-6">
+            {(!id || isNaN(tourId))
+              ? `The tour ID "${id}" is not valid. Please check the URL and try again.`
+              : "The requested tour could not be found."
+            }
+          </p>
           <Link to="/tours" className="inline-block bg-gradient-to-r from-green-600 to-emerald-600 text-white px-6 py-2.5 rounded-xl font-bold hover:shadow-lg transition">
             Browse All Tours
           </Link>
@@ -52,6 +57,9 @@ function Booking() {
       </div>
     );
   }
+
+  const tzsAmount = tour ? tour.price * travelers : 0;
+  const usdAmount = tour ? Math.round(tzsAmount / USD_TO_TZS) : 0;
 
   const handleBookingComplete = (paymentData) => {
     if (!user) return;

@@ -69,10 +69,9 @@ function MpesaSimulator({ amountLabel, initialPhone = "", onSuccess, onCancel })
       setStatus("success");
       setProcessing(false);
       clearInterval(progressInterval);
+      setSimulatedProgress(100);
 
-      setTimeout(() => {
-        onSuccess({ phone: phone.trim(), transactionId: result.transactionId, paymentStatus: "Paid" });
-      }, 1500);
+      onSuccess({ phone: phone.trim(), transactionId: result.transactionId, paymentStatus: "Paid" });
     } catch (err) {
       setError(err.message || "Payment failed");
       setProcessing(false);

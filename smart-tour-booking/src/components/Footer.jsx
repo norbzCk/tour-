@@ -1,9 +1,39 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { useToast } from "../hooks/useToast";
 import { useTheme } from "../context/ThemeContext";
 
 function Footer() {
+  const { addToast } = useToast();
   const { isDark } = useTheme();
+  const [email, setEmail] = useState("");
+
+  const isValidEmail = (value) => {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+  };
+
+  const handleSubscribe = () => {
+    if (!email) {
+      addToast("Please enter your email address.", "error");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      addToast("Please enter a valid email address.", "error");
+      return;
+    }
+
+    const subscribers = JSON.parse(localStorage.getItem("subscribers") || "[]");
+    if (subscribers.includes(email.toLowerCase())) {
+      addToast("This email is already subscribed.", "info");
+      return;
+    }
+
+    localStorage.setItem("subscribers", JSON.stringify([...subscribers, email.toLowerCase()]));
+    setEmail("");
+    addToast("Subscribed successfully! You will receive travel updates.", "success");
+  };
 
   return (
     <footer className={`relative transition-colors duration-300 ${isDark ? "bg-slate-950 text-gray-300" : "bg-gray-50 text-gray-600"}`}>
@@ -99,12 +129,17 @@ function Footer() {
           <div className="flex gap-2">
             <input
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email"
               className={`flex-1 px-4 py-3 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition ${
                 isDark ? "bg-slate-800 border border-slate-700 text-white placeholder-gray-500" : "bg-white border border-gray-200 text-gray-900 placeholder-gray-400"
               }`}
             />
-            <button className="px-5 py-3 bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl font-semibold text-sm text-white hover:shadow-lg hover:shadow-green-500/30 transition transform hover:-translate-y-0.5">
+            <button
+              onClick={handleSubscribe}
+              className="px-5 py-3 bg-gradient-to-r from-green-600 to-emerald-600 rounded-xl font-semibold text-sm text-white hover:shadow-lg hover:shadow-green-500/30 transition transform hover:-translate-y-0.5"
+            >
               Subscribe
             </button>
           </div>

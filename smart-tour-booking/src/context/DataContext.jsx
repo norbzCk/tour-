@@ -4,6 +4,7 @@ import { paymentService } from "../services/paymentService";
 import { notificationService } from "../services/notificationService";
 import { bookingService } from "../services/bookingService";
 
+/* eslint-disable react-refresh/only-export-components */
 const DataContext = createContext(null);
 
 const USD_TO_TZS = 2500;

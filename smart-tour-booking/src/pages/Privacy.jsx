@@ -10,7 +10,7 @@ function Privacy() {
         <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-6">Privacy Policy</h1>
         <p className="text-gray-500 dark:text-gray-400 text-sm mb-10">Last updated: June 2026</p>
 
-        <div className={`prose prose-gray dark:prose-invert max-w-none space-y-8 ${isDark ? "text-gray-300" : "text-gray-700"}`}>
+        <div className="prose prose-gray dark:prose-invert max-w-none space-y-8 text-gray-700 dark:text-gray-300">
           <section>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">1. Information We Collect</h2>
             <p>We collect personal information such as your name, email address, phone number, and payment details when you register, book a tour, or contact us. This information is used solely to provide and improve our services.</p>

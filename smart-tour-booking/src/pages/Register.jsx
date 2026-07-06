@@ -135,6 +135,7 @@ function Register() {
                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Full Name</label>
                 <input
                   type="text"
+                  name="name"
                   placeholder="John Doe"
                   required
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition bg-gray-50/50 dark:bg-gray-700/50 dark:text-white"
@@ -154,6 +155,7 @@ function Register() {
                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Phone Number</label>
                 <input
                   type="tel"
+                  name="phone"
                   placeholder="+255 712 345 678"
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition bg-gray-50/50 dark:bg-gray-700/50 dark:text-white"
                 />
