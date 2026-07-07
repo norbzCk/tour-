@@ -52,48 +52,46 @@ function Navbar() {
       className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border-b border-gray-200 dark:border-slate-800 sticky top-0 z-50 shadow-sm transition-colors duration-300"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex justify-between items-center h-16">
-          <Link to="/" className="flex items-center gap-2.5 flex-shrink-0">
-            <div className="w-9 h-9 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center shadow-md">
-              <span className="text-white font-extrabold text-base">S</span>
-            </div>
-            <span className="text-lg font-extrabold text-gray-900 dark:text-white tracking-tight hidden sm:block">SmartTour</span>
+        <div className="flex justify-between items-center h-24">
+          <Link to="/" className="flex items-center gap-4 flex-shrink-0">
+            <img src="/Logo.png" alt="SmartTour" className="w-16 h-16 object-contain rounded-xl shadow-md" />
+            <span className="text-xl font-extrabold text-gray-900 dark:text-white tracking-tight hidden sm:block">SmartTour</span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-1.5">
             <Link
               to="/"
-              className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-green-700 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-slate-800/50 transition-colors"
+              className="px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-green-700 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-slate-800/50 transition-colors"
             >
               Home
             </Link>
             <Link
               to="/tours"
-              className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-green-700 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-slate-800/50 transition-colors"
+              className="px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-green-700 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-slate-800/50 transition-colors"
             >
               Tours
             </Link>
             <Link
               to="/destinations"
-              className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-green-700 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-slate-800/50 transition-colors"
+              className="px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-green-700 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-slate-800/50 transition-colors"
             >
               Destinations
             </Link>
             <Link
               to="/travel-tips"
-              className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-green-700 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-slate-800/50 transition-colors"
+              className="px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-green-700 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-slate-800/50 transition-colors"
             >
               Travel Tips
             </Link>
             <Link
               to="/about"
-              className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-green-700 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-slate-800/50 transition-colors"
+              className="px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-green-700 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-slate-800/50 transition-colors"
             >
               About
             </Link>
             <Link
               to="/planner"
-              className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-green-700 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-slate-800/50 transition-colors"
+              className="px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-green-700 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-slate-800/50 transition-colors"
             >
               Planner
             </Link>
@@ -101,7 +99,7 @@ function Navbar() {
             {user?.role === "admin" && (
               <Link
                 to="/admin"
-                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-green-700 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-slate-800/50 transition-colors"
+                className="px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-green-700 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-slate-800/50 transition-colors"
               >
                 Admin Panel
               </Link>
@@ -110,7 +108,7 @@ function Navbar() {
             {user?.role === "guide" && (
               <Link
                 to="/guide"
-                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-green-700 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-slate-800/50 transition-colors"
+                className="px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-green-700 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-slate-800/50 transition-colors"
               >
                 Guide Dashboard
               </Link>
@@ -119,7 +117,7 @@ function Navbar() {
             {user?.role === "operator" && (
               <Link
                 to="/operator"
-                className="px-3 py-2 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-green-700 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-slate-800/50 transition-colors"
+                className="px-4 py-2.5 rounded-lg text-sm font-medium text-gray-600 dark:text-slate-300 hover:text-green-700 dark:hover:text-green-400 hover:bg-green-50 dark:hover:bg-slate-800/50 transition-colors"
               >
                 Operator Dashboard
               </Link>
@@ -243,7 +241,7 @@ function Navbar() {
               <div className="relative">
                 <button
                   onClick={() => setProfileOpen(!profileOpen)}
-                  className="flex items-center gap-2.5 pl-1 pr-2 py-1.5 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
+                  className="flex items-center gap-2.5 pl-1 pr-3 py-2 rounded-xl hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
                 >
                   <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white font-bold text-xs shadow-sm">
                     {getInitials(user.name)}
@@ -358,7 +356,7 @@ function Navbar() {
 
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden p-2 rounded-lg text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
+            className="md:hidden p-2.5 rounded-lg text-gray-600 dark:text-slate-300 hover:bg-gray-100 dark:hover:bg-slate-800 transition-colors"
           >
             <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               {mobileOpen ? (

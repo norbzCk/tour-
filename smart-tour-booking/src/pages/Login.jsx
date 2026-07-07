@@ -51,18 +51,16 @@ function Login() {
         className="w-full max-w-md bg-white/90 dark:bg-slate-800/90 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-green-100/50 dark:border-slate-700/50"
       >
         <div className="text-center mb-8">
-          <motion.div
+          <motion.img
+            src="/Logo.png"
+            alt="SmartTour"
             initial={{ scale: 0, rotate: -180 }}
             animate={{ scale: 1, rotate: 0 }}
             transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-            className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl shadow-lg mb-4"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          </motion.div>
+            className="w-16 h-16 object-contain mx-auto mb-4"
+          />
           <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white">SmartTour</h1>
-          <p className="text-sm text-gray-505 dark:text-slate-400 mt-2">Your journey begins with a single click</p>
+          <p className="text-sm text-gray-500 dark:text-slate-400 mt-2">Your journey begins with a single click</p>
         </div>
 
         {error && (

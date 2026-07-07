@@ -77,11 +77,7 @@ function Register() {
         className="w-full max-w-md bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/50 dark:border-gray-700/50"
       >
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl shadow-lg mb-4">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-            </svg>
-          </div>
+          <img src="/Logo.png" alt="SmartTour" className="w-16 h-16 object-contain mx-auto mb-4" />
           <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white">Join SmartTour</h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
             Create your account and start exploring Tanzania

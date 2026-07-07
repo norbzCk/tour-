@@ -4,7 +4,7 @@ import { useData } from "../../context/DataContext";
 import { useTheme } from "../../context/ThemeContext";
 import PageHeader from "../../components/admin/PageHeader";
 import SearchBar from "../../components/admin/SearchBar";
-import StatusBadge from "../../components/admin/StatusBadge";
+import RoleBadge from "../../components/admin/RoleBadge";
 
 function Users() {
   const { users, addUser, updateUser, deleteUser } = useData();
@@ -170,7 +170,7 @@ function Users() {
                   <td className={`py-4 text-sm px-6 ${isDark ? "text-gray-300" : "text-gray-600"}`}>{user.email}</td>
                   <td className={`py-4 text-sm px-6 ${isDark ? "text-gray-300" : "text-gray-600"}`}>{user.phone || "—"}</td>
                   <td className="py-4 px-6">
-                    <StatusBadge status={user.role === "admin" ? "Confirmed" : "Pending"} />
+                    <RoleBadge role={user.role} />
                   </td>
                   <td className={`py-4 text-sm px-6 ${isDark ? "text-gray-300" : "text-gray-600"}`}>{user.joinedAt}</td>
                   <td className="py-4 px-6">
