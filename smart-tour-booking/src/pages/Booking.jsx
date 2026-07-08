@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useData } from "../context/DataContext";
 import { useAuth } from "../context/AuthContext";
 import { useToast } from "../hooks/useToast";
-import MpesaSimulator from "../components/MpesaSimulator";
+import PaymentSimulator from "../components/PaymentSimulator";
 
 function Booking() {
   const { id } = useParams();
@@ -63,10 +63,11 @@ function Booking() {
 
   const handleBookingComplete = (paymentData) => {
     if (!user) return;
-    addBooking({
-      userId: user.email.includes("admin") ? 1 : 2,
+    const booking = {
+      userId: user.id || (user.email.includes("admin") ? 1 : 2),
       userName: user.name,
       userEmail: user.email,
+      userPhone: paymentData.phone || user.phone || "",
       tourId: tour.id,
       tourTitle: tour.title,
       date: new Date().toISOString().slice(0, 10),
@@ -74,15 +75,16 @@ function Booking() {
       amountUSD: usdAmount,
       travelers,
       specialRequests,
-      paymentStatus: paymentData.paymentStatus,
+      paymentStatus: paymentData.paymentStatus || "Paid",
       paymentMethod: paymentData.paymentMethod || "MPESA",
       transactionId: paymentData.transactionId,
-      phone: paymentData.phone,
+      phone: paymentData.phone || user.phone || "",
       status: "Pending",
-    });
+    };
+    addBooking(booking);
     setPaymentSession(paymentData);
     setSuccess(true);
-    addToast(`Booking confirmed! Transaction: ${paymentData.transactionId}`, "success");
+    addToast(`Payment received! Booking # is pending admin confirmation.`, "success");
     setTimeout(() => {
       addToast("Redirecting to your bookings...", "info", 2000);
       navigate("/my-bookings");
@@ -103,12 +105,16 @@ function Booking() {
               <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
             </svg>
           </div>
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Payment Confirmed!</h2>
-          <p className="text-gray-600 dark:text-slate-300 mb-4">Your M-Pesa payment for {tour.title} is complete.</p>
+          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">Payment Received!</h2>
+          <p className="text-gray-600 dark:text-slate-300 mb-4">Your {paymentSession?.paymentMethod || "M-PESA"} payment for {tour.title} is complete. Your booking is now pending admin confirmation.</p>
           <div className="bg-gray-50 dark:bg-slate-800 rounded-xl p-4 mb-4 border border-gray-100 dark:border-slate-700/50">
             <div className="flex justify-between text-sm py-1">
               <span className="text-gray-500 dark:text-slate-400">Transaction ID</span>
               <span className="font-semibold text-green-700 dark:text-green-400">{paymentSession?.transactionId}</span>
+            </div>
+            <div className="flex justify-between text-sm py-1">
+              <span className="text-gray-500 dark:text-slate-400">Method</span>
+              <span className="font-semibold text-green-700 dark:text-green-400">{paymentSession?.paymentMethod}</span>
             </div>
             <div className="flex justify-between text-sm py-1">
               <span className="text-gray-500 dark:text-slate-400">Phone</span>
@@ -218,11 +224,12 @@ function Booking() {
                     <span className="text-white text-lg">💳</span>
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-gray-900 dark:text-white">Step 1: Authorize MPESA Payment</p>
-                    <p className="text-xs text-gray-500 dark:text-slate-400">Secure M-Pesa STK Push payment simulation</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white">Step 1: Choose & Authorize Payment</p>
+                  <p className="text-xs text-gray-500 dark:text-slate-400">Secure M-Pesa, Airtel, Card or Bank payment simulation</p>
                   </div>
                 </div>
-                <MpesaSimulator
+                <PaymentSimulator
+                  amount={tzsAmount}
                   amountLabel={`${formatTZS(tzsAmount)} (${usdAmount} USD)`}
                   initialPhone={user?.phone || ""}
                   onSuccess={handleBookingComplete}

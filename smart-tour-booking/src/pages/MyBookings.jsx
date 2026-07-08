@@ -13,7 +13,14 @@ function MyBookings() {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("All");
 
-  const myBookings = bookings.filter((b) => b.userEmail === user?.email);
+  const myBookings = bookings.filter((booking) => {
+    const currentEmail = user?.email?.toLowerCase();
+    const bookingEmail = booking.userEmail?.toLowerCase();
+    const bookingName = booking.userName?.toLowerCase();
+    const userName = user?.name?.toLowerCase();
+
+    return bookingEmail === currentEmail || bookingName === userName;
+  });
 
   const filtered = myBookings.filter((b) => {
     const matchesSearch = b.tourTitle.toLowerCase().includes(search.toLowerCase());

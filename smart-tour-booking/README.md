@@ -185,8 +185,7 @@ smart-tour-booking/
 │   │   └── useToast.js            # Toast notification hook
 │   │
 │   ├── services/                  # Business logic services
-│   │   ├── bookingService.js      # Booking operations
-│   │   ├── paymentService.js      # Payment processing
+│   │   ├── paymentService.js      # Multi-method payment processing (M-Pesa, Airtel, Card, Bank)
 │   │   └── notificationService.js # Notification handling
 │   │
 │   ├── data/                      # Mock/static data
@@ -215,7 +214,111 @@ smart-tour-booking/
 
 ---
 
-## 👥 User Roles & Capabilities
+## � Tourist Interface Documentation
+
+### 4.3.3 Tourist Login Page
+
+![Tourist Login Page](docs/screenshots/tourist-login-page.svg)
+
+#### Purpose
+Allows registered tourists to authenticate before accessing protected system features such as booking, profile management, and personal bookings.
+
+#### Functionalities
+- Email field
+- Password field
+- Login button
+- Password masking
+- Authentication through the auth context
+- Error handling with inline messages and toast notifications
+
+#### Implementation
+The login experience is implemented on the Login page and is routed through the `/login` path. The form validates that both the email address and password are supplied before submission. On successful authentication, the application calls the login service, displays a success toast, and redirects the user to the most appropriate destination, such as the tours page, the previous protected page, or the bookings page when prior reservations exist.
+
+#### Requirement Addressed
+> The system must allow tourists to log into the system.
+
+### 4.3.4 Browse Available Tours
+
+![Browse Available Tours](docs/screenshots/browse-tours.svg)
+
+#### Purpose
+Displays all available tour packages so tourists can review and select a suitable experience.
+
+#### Functionalities
+- Tour cards
+- Tour images
+- Price information
+- Duration information
+- Destination information
+- View Details button for each tour
+
+#### Implementation
+The tours listing is displayed on the Tours page and is routed through `/tours`. Each card presents core tour details and includes a navigation link that opens the relevant Tour Details page for deeper information.
+
+#### Requirement Addressed
+> The system must allow tourists to browse available tours.
+
+### 4.3.5 Search Tours
+
+![Search Tours](docs/screenshots/search-tours.svg)
+
+#### Purpose
+Enables tourists to quickly find tours based on destination, keywords, or category.
+
+#### Functionalities
+- Search box
+- Filtering by destination and category
+- Dynamic search results that update as the user types
+
+#### Implementation
+The search experience is implemented on the Tours page using an interactive search field and category dropdown. The results are filtered dynamically from the available tour list based on the user’s query and selected category, providing immediate feedback as the search criteria change.
+
+#### Requirement Addressed
+> The system must allow tourists to search tours by destination.
+
+### 4.3.6 Tour Details
+
+![Tour Details](docs/screenshots/tour-details.svg)
+
+#### Purpose
+Provides detailed information about a selected tour so tourists can evaluate the experience before booking.
+
+#### Functionalities
+- Tour description
+- Price information
+- Duration information
+- Destination information
+- Booking button
+
+#### Implementation
+The detailed tour view is implemented on the Tour Details page and is routed through `/tour/:id`. It displays the tour description, visual gallery, included features, and a booking call-to-action. If the tourist is not authenticated, the button directs them to the login page and preserves the intended booking destination.
+
+#### Requirement Addressed
+> The system must allow tourists to view detailed information about a selected tour.
+
+### 4.3.7 Tour Booking
+
+![Tour Booking](docs/screenshots/tour-booking.svg)
+
+#### Purpose
+Allows tourists to reserve a selected tour package by submitting booking details and completing a payment step.
+
+#### Functionalities
+- Booking form
+- Personal information fields
+- Number of travellers input
+- Special requests input
+- Booking confirmation and payment simulation
+
+#### Implementation
+The booking flow is handled on the Booking page and is routed through `/booking/:id`. Authenticated tourists can review the selected tour, enter traveler details, add special requests, and complete a simulated M-Pesa payment. After success, the booking is saved and the user is redirected to their bookings page for confirmation.
+
+#### Requirement Addressed
+> The system must allow tourists to book a tour package.
+
+---
+
+## �👥 User Roles & Capabilities
 
 ### 1. **Tourist** 🎒
 - Browse and search available tours

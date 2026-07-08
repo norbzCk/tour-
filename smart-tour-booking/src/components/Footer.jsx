@@ -179,9 +179,9 @@ function Footer() {
                 {isSubmitting ? "Joining..." : "Subscribe"}
               </button>
             </div>
-            <p className={`text-xs ${isDark ? "text-gray-500" : "text-gray-400"}`}>
+            {/* <p className={`text-xs ${isDark ? "text-gray-500" : "text-gray-400"}`}>
               No backend required — your email is saved locally in this prototype.
-            </p>
+            </p> */}
           </form>
         </motion.div>
       </div>

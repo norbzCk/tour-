@@ -86,6 +86,12 @@ function AdminBookings() {
                     <div>
                       <p className={`text-sm font-medium ${isDark ? "text-white" : "text-gray-900"}`}>{booking.userName}</p>
                       <p className={`text-xs ${isDark ? "text-gray-400" : "text-gray-500"}`}>{booking.userEmail}</p>
+                      <p className={`text-[11px] mt-0.5 ${isDark ? "text-gray-500" : "text-gray-400"}`}>
+                        {booking.paymentMethod || "MPESA"} • {booking.paymentStatus || "Paid"}
+                      </p>
+                      {booking.transactionId && (
+                        <p className={`text-[11px] font-mono ${isDark ? "text-gray-500" : "text-gray-400"}`}>{booking.transactionId}</p>
+                      )}
                     </div>
                   </td>
                   <td className={`py-4 text-sm max-w-[200px] truncate ${isDark ? "text-gray-300" : "text-gray-600"}`}>{booking.tourTitle}</td>

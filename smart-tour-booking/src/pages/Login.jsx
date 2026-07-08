@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useData } from "../context/DataContext";
 import { useToast } from "../hooks/useToast";
 import { motion } from "framer-motion";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -7,6 +8,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 function Login() {
   const [isLogin, setIsLogin] = useState(true);
   const { login } = useAuth();
+  const { bookings } = useData();
   const { addToast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
@@ -15,9 +17,8 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
-    const email = e.target.email.value.trim();
-    const password = e.target.password.value;
+    const email = e.currentTarget.elements.email.value.trim();
+    const password = e.currentTarget.elements.password.value;
     if (!email || !password) {
       setError("Please enter both email and password");
       return;
@@ -27,10 +28,15 @@ function Login() {
       const role = await login(email, password);
       addToast(`Welcome back, ${email.split("@")[0]}!`, "success");
       const redirectTo = location.state?.from;
+      const hasPriorBookings = bookings.some((booking) =>
+        booking.userEmail?.toLowerCase() === email.toLowerCase()
+      );
       if (role === "admin") {
         navigate("/admin");
       } else if (redirectTo) {
         navigate(redirectTo, { replace: true });
+      } else if (hasPriorBookings) {
+        navigate("/my-bookings");
       } else {
         navigate("/tours");
       }

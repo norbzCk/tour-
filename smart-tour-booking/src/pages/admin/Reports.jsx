@@ -2,9 +2,10 @@ import { motion } from "framer-motion";
 import { useData } from "../../context/DataContext";
 import { useTheme } from "../../context/ThemeContext";
 import PageHeader from "../../components/admin/PageHeader";
+import StatusBadge from "../../components/admin/StatusBadge";
 
 function Reports() {
-  const { tours, bookings, guides, formatTZS } = useData();
+  const { tours, bookings, payments, guides, formatTZS } = useData();
   const { isDark } = useTheme();
 
   const totalRevenue = bookings.reduce((sum, b) => sum + (b.status === "Confirmed" ? b.amount : 0), 0);
@@ -13,6 +14,16 @@ function Reports() {
   const confirmedBookings = bookings.filter((b) => b.status === "Confirmed").length;
   const pendingBookings = bookings.filter((b) => b.status === "Pending").length;
   const rejectedBookings = bookings.filter((b) => b.status === "Rejected").length;
+
+  const completedPayments = payments.filter((p) => p.status === "Paid");
+  const totalCollected = completedPayments.reduce((sum, p) => sum + p.amount, 0);
+  const pendingPayments = payments.filter((p) => p.status === "Pending");
+  const refundedPayments = payments.filter((p) => p.status === "Refunded");
+
+  const paymentsByMethod = payments.reduce((acc, p) => {
+    acc[p.method] = (acc[p.method] || 0) + p.amount;
+    return acc;
+  }, {});
 
   const categoryBreakdown = tours.reduce((acc, t) => {
     acc[t.category] = (acc[t.category] || 0) + 1;
@@ -53,6 +64,81 @@ function Reports() {
           <p className={`text-sm mb-1 ${isDark ? "text-gray-400" : "text-gray-500"}`}>Active Guides</p>
           <p className={`text-3xl font-extrabold text-purple-700 dark:text-purple-400`}>{guides.filter((g) => g.status === "Active").length}</p>
           <p className={`text-xs mt-2 ${isDark ? "text-gray-500" : "text-gray-400"}`}>of {guides.length} total</p>
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className={`rounded-2xl shadow-sm border p-6 ${isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
+          <p className={`text-sm mb-1 ${isDark ? "text-gray-400" : "text-gray-500"}`}>Payments Collected</p>
+          <p className="text-3xl font-extrabold text-emerald-700 dark:text-emerald-400">{formatTZS(totalCollected)}</p>
+          <p className={`text-xs mt-2 ${isDark ? "text-gray-500" : "text-gray-400"}`}>{completedPayments.length} settled payment(s)</p>
+        </div>
+        <div className={`rounded-2xl shadow-sm border p-6 ${isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
+          <p className={`text-sm mb-1 ${isDark ? "text-gray-400" : "text-gray-500"}`}>Pending Payments</p>
+          <p className="text-3xl font-extrabold text-amber-700 dark:text-amber-400">{formatTZS(pendingPayments.reduce((s, p) => s + p.amount, 0))}</p>
+          <p className={`text-xs mt-2 ${isDark ? "text-gray-500" : "text-gray-400"}`}>{pendingPayments.length} awaiting clearance</p>
+        </div>
+        <div className={`rounded-2xl shadow-sm border p-6 ${isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
+          <p className={`text-sm mb-1 ${isDark ? "text-gray-400" : "text-gray-500"}`}>Refunded</p>
+          <p className="text-3xl font-extrabold text-red-700 dark:text-red-400">{formatTZS(refundedPayments.reduce((s, p) => s + p.amount, 0))}</p>
+          <p className={`text-xs mt-2 ${isDark ? "text-gray-500" : "text-gray-400"}`}>{refundedPayments.length} refunded</p>
+        </div>
+        <div className={`rounded-2xl shadow-sm border p-6 ${isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
+          <p className={`text-sm mb-1 ${isDark ? "text-gray-400" : "text-gray-500"}`}>Total Transactions</p>
+          <p className="text-3xl font-extrabold text-blue-700 dark:text-blue-400">{payments.length}</p>
+          <p className={`text-xs mt-2 ${isDark ? "text-gray-500" : "text-gray-400"}`}>across all methods</p>
+        </div>
+      </div>
+
+      <div className="grid md:grid-cols-3 gap-6">
+        <div className={`rounded-2xl shadow-sm border p-6 md:col-span-1 ${isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
+          <h3 className={`text-lg font-bold mb-4 ${isDark ? "text-white" : "text-gray-800"}`}>Payments by Method</h3>
+          <div className="space-y-4">
+            {Object.keys(paymentsByMethod).length === 0 && (
+              <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-500"}`}>No payments yet.</p>
+            )}
+            {Object.entries(paymentsByMethod).map(([method, amount]) => (
+              <div key={method} className="flex justify-between items-center">
+                <span className={`text-sm ${isDark ? "text-gray-300" : "text-gray-600"}`}>{method}</span>
+                <span className={`font-bold text-gray-900 dark:text-white`}>{formatTZS(amount)}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className={`rounded-2xl shadow-sm border p-6 md:col-span-2 ${isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
+          <h3 className={`text-lg font-bold mb-4 ${isDark ? "text-white" : "text-gray-800"}`}>Recent Payments</h3>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className={`border-b ${isDark ? "border-gray-700" : "border-gray-100"}`}>
+                  <th className={`pb-3 text-sm font-semibold ${isDark ? "text-gray-400" : "text-gray-500"}`}>Tx ID</th>
+                  <th className={`pb-3 text-sm font-semibold ${isDark ? "text-gray-400" : "text-gray-500"}`}>Customer</th>
+                  <th className={`pb-3 text-sm font-semibold ${isDark ? "text-gray-400" : "text-gray-500"}`}>Method</th>
+                  <th className={`pb-3 text-sm font-semibold ${isDark ? "text-gray-400" : "text-gray-500"}`}>Amount</th>
+                  <th className={`pb-3 text-sm font-semibold ${isDark ? "text-gray-400" : "text-gray-500"}`}>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {payments.slice(0, 8).map((p) => (
+                  <tr key={p.id} className={`border-b ${isDark ? "border-gray-700" : "border-gray-50"}`}>
+                    <td className={`py-3 text-xs font-mono ${isDark ? "text-gray-300" : "text-gray-600"}`}>{p.transactionId}</td>
+                    <td className={`py-3 text-sm ${isDark ? "text-white" : "text-gray-900"}`}>{p.userName || p.userEmail}</td>
+                    <td className={`py-3 text-sm ${isDark ? "text-gray-300" : "text-gray-600"}`}>{p.method}</td>
+                    <td className={`py-3 text-sm font-semibold ${isDark ? "text-white" : "text-gray-900"}`}>{formatTZS(p.amount)}</td>
+                    <td className="py-3">
+                      <StatusBadge status={p.status} />
+                    </td>
+                  </tr>
+                ))}
+                {payments.length === 0 && (
+                  <tr>
+                    <td colSpan={5} className={`py-8 text-center text-sm ${isDark ? "text-gray-400" : "text-gray-500"}`}>No payments recorded yet.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 

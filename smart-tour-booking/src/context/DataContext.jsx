@@ -1,11 +1,25 @@
-import { createContext, useContext, useState, useCallback } from "react";
+import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import toursData from "../data/tours";
+import bookingsData from "../data/bookings";
 import { paymentService } from "../services/paymentService";
 import { notificationService } from "../services/notificationService";
-import { bookingService } from "../services/bookingService";
 
 /* eslint-disable react-refresh/only-export-components */
 const DataContext = createContext(null);
+
+const STORAGE_KEY = "smartTourState_v2";
+
+function loadPersistedState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch (e) {
+    console.warn("Failed to read persisted state:", e);
+  }
+  return null;
+}
+
+const persistedState = loadPersistedState();
 
 const USD_TO_TZS = 2500;
 
@@ -42,14 +56,6 @@ const initialGuides = [
   { id: 4, name: "Amina Hassan", email: "amina@guide.com", phone: "+255 712 111 004", specialty: "City", experience: "4 years", status: "Inactive", bio: "Dar es Salaam city tour expert with deep knowledge of local culture.", languages: "English, Swahili", rating: 4.5 },
 ];
 
-const initialBookings = [
-  { id: 1, userId: 2, userName: "Sarah M.", userEmail: "sarah@example.com", tourId: 1, tourTitle: "Serengeti Safari Adventure", date: "2026-07-10", amount: Math.round(799 * USD_TO_TZS), amountUSD: 799, status: "Confirmed", paymentStatus: "Paid", paymentMethod: "MPESA", travelers: 2, createdAt: "2026-06-20" },
-  { id: 2, userId: 3, userName: "James K.", userEmail: "james@example.com", tourId: 2, tourTitle: "Zanzibar Beach Escape", date: "2026-07-20", amount: Math.round(499 * USD_TO_TZS), amountUSD: 499, status: "Pending", paymentStatus: "Paid", paymentMethod: "MPESA", travelers: 1, createdAt: "2026-06-21" },
-  { id: 3, userId: 4, userName: "Grace T.", userEmail: "grace@example.com", tourId: 3, tourTitle: "Mount Kilimanjaro Trek", date: "2026-08-05", amount: Math.round(1200 * USD_TO_TZS), amountUSD: 1200, status: "Confirmed", paymentStatus: "Paid", paymentMethod: "MPESA", travelers: 1, createdAt: "2026-06-22" },
-  { id: 4, userId: 2, userName: "Sarah M.", userEmail: "sarah@example.com", tourId: 5, tourTitle: "Ngorongoro Crater Tour", date: "2026-08-12", amount: Math.round(650 * USD_TO_TZS), amountUSD: 650, status: "Pending", paymentStatus: "Paid", paymentMethod: "MPESA", travelers: 4, createdAt: "2026-06-23" },
-  { id: 5, userId: 3, userName: "James K.", userEmail: "james@example.com", tourId: 4, tourTitle: "Dar es Salaam City Tour", date: "2026-08-18", amount: Math.round(199 * USD_TO_TZS), amountUSD: 199, status: "Rejected", paymentStatus: "Paid", paymentMethod: "MPESA", travelers: 2, createdAt: "2026-06-24" },
-];
-
 const initialLogs = [
   { id: 1, action: "User Login", user: "admin@example.com", timestamp: "2026-06-24 08:00", details: "Admin logged in" },
   { id: 2, action: "Booking Created", user: "sarah@example.com", timestamp: "2026-06-24 08:15", details: "Booked Serengeti Safari Adventure" },
@@ -63,14 +69,43 @@ function formatTZS(amount) {
 
 function DataProvider({ children }) {
   const [tours, setTours] = useState(
-    toursData.map((t) => ({ ...t, guideId: t.guideId || null }))
+    persistedState?.tours ?? toursData.map((t) => ({ ...t, guideId: t.guideId || null }))
   );
-  const [bookings, setBookings] = useState(initialBookings);
-  const [users, setUsers] = useState(initialUsers);
-  const [guides, setGuides] = useState(initialGuides);
-  const [logs, setLogs] = useState(initialLogs);
-  const [notifications, setNotifications] = useState(initialNotifications);
-  const [nextId, setNextId] = useState(100);
+  const [bookings, setBookings] = useState(
+    persistedState?.bookings ?? bookingsData.map((b) => ({
+      id: b.id,
+      userId: b.userId ?? null,
+      userName: b.userName ?? "Guest",
+      userEmail: b.userEmail ?? "",
+      tourId: b.tourId,
+      tourTitle: b.tourTitle ?? b.tour,
+      date: b.date,
+      amount: b.amount ?? 0,
+      amountUSD: b.amountUSD ?? Math.round((b.amount ?? 0) / USD_TO_TZS),
+      status: b.status,
+      paymentStatus: b.paymentStatus ?? "Pending",
+      paymentMethod: b.paymentMethod ?? "MPESA",
+      travelers: b.travelers ?? 1,
+      createdAt: b.createdAt ?? b.date,
+    }))
+  );
+  const [users, setUsers] = useState(persistedState?.users ?? initialUsers);
+  const [guides, setGuides] = useState(persistedState?.guides ?? initialGuides);
+  const [logs, setLogs] = useState(persistedState?.logs ?? initialLogs);
+  const [notifications, setNotifications] = useState(persistedState?.notifications ?? initialNotifications);
+  const [payments, setPayments] = useState(persistedState?.payments ?? []);
+  const [nextId, setNextId] = useState(persistedState?.nextId ?? 100);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({ tours, bookings, users, guides, logs, notifications, payments, nextId })
+      );
+    } catch (e) {
+      console.warn("Failed to persist state:", e);
+    }
+  }, [tours, bookings, users, guides, logs, notifications, payments, nextId]);
 
   const addLog = useCallback((action, user, details) => {
     const log = {
@@ -110,15 +145,6 @@ function DataProvider({ children }) {
     );
   }, []);
 
-  const confirmBookingByWorker = useCallback((bookingId, status, guideId) => {
-    setBookings((prev) =>
-      prev.map((b) => (b.id === bookingId ? { ...b, status, guideId } : b))
-    );
-    // Find the guide name for logs
-    const guide = guides.find((g) => g.id === guideId);
-    addLog("Booking Confirmed", "system", `Background worker auto-confirmed booking ID: ${bookingId} and assigned guide ${guide?.name || "guide"}`);
-  }, [guides, addLog]);
-
   const addTour = useCallback((tour) => {
     const newTour = { ...tour, id: nextId, rating: 4.5 };
     setTours((prev) => [...prev, newTour]);
@@ -144,20 +170,41 @@ function DataProvider({ children }) {
   }, [guides, addLog]);
 
   const addBooking = useCallback((booking) => {
-    const transactionId = booking.transactionId || paymentService.generateTransactionId();
+    const transactionId = booking.transactionId || paymentService.generateTransactionId(booking.paymentMethod);
+    const paymentMethod = booking.paymentMethod || "MPESA";
+    const paymentStatus = booking.paymentStatus || "Paid";
 
     const newBooking = {
       ...booking,
       id: nextId,
       status: booking.status || "Pending",
-      paymentStatus: booking.paymentStatus || "Paid",
-      paymentMethod: booking.paymentMethod || "MPESA",
+      paymentStatus,
+      paymentMethod,
       createdAt: new Date().toISOString().slice(0, 10),
       amountUSD: booking.amountUSD || Math.round(booking.amount / USD_TO_TZS),
       transactionId,
     };
     setBookings((prev) => [...prev, newBooking]);
-    addLog("Booking Created", booking.userEmail || "system", `Booked ${booking.tourTitle} | Transaction: ${transactionId}`);
+
+    // Record the payment in the payments ledger (single source of truth)
+    const newPayment = {
+      id: `PAY-${transactionId}`,
+      bookingId: nextId,
+      transactionId,
+      method: paymentMethod,
+      status: paymentStatus,
+      amount: booking.amount,
+      amountUSD: newBooking.amountUSD,
+      userEmail: booking.userEmail,
+      userName: booking.userName,
+      tourId: booking.tourId,
+      tourTitle: booking.tourTitle,
+      phone: booking.phone || "",
+      createdAt: newBooking.createdAt,
+    };
+    setPayments((prev) => [newPayment, ...prev]);
+
+    addLog("Booking Created", booking.userEmail || "system", `Booked ${booking.tourTitle} via ${paymentMethod} | Transaction: ${transactionId}`);
     setNextId((prev) => prev + 1);
 
     // Trigger SMS Service Simulation
@@ -172,27 +219,29 @@ function DataProvider({ children }) {
     addNotification(
       booking.userEmail,
       "💳 Payment Received",
-      `Payment of ${formatTZS(booking.amount)} confirmed via M-Pesa. Transaction ID: ${transactionId}`
+      `Payment of ${formatTZS(booking.amount)} received via ${paymentMethod}. Transaction ID: ${transactionId}`
     );
     addNotification(
       booking.userEmail,
       "⏳ Booking Pending Confirmation",
-      `Your booking for ${booking.tourTitle} is being reviewed by the confirmation microservice.`
-    );
-
-    // Trigger Background approval microservice simulation
-    bookingService.startBackgroundApprovalWorker(
-      newBooking,
-      guides,
-      confirmBookingByWorker,
-      addNotification
+      `Your booking for ${booking.tourTitle} is pending confirmation by an administrator.`
     );
 
     return newBooking;
-  }, [nextId, addLog, guides, addNotification, confirmBookingByWorker]);
+  }, [nextId, addLog, addNotification]);
 
   const updateBookingStatus = useCallback((id, status) => {
     setBookings((prev) => prev.map((b) => (b.id === id ? { ...b, status } : b)));
+    // Keep the payment ledger in sync: confirmed payments settle, rejected ones are refunded.
+    if (status === "Confirmed" || status === "Rejected") {
+      setPayments((prev) =>
+        prev.map((p) =>
+          p.bookingId === id
+            ? { ...p, status: status === "Confirmed" ? "Paid" : "Refunded" }
+            : p
+        )
+      );
+    }
     addLog("Booking Updated", "admin@example.com", `Updated booking ID: ${id} to ${status}`);
   }, [addLog]);
 
@@ -250,6 +299,7 @@ function DataProvider({ children }) {
     bookings, addBooking, updateBookingStatus, cancelBooking,
     users, addUser, updateUser, deleteUser, findUserByEmail,
     guides, addGuide, updateGuide, deleteGuide, findGuideByEmail,
+    payments,
     logs, addLog,
     notifications, addNotification, markNotificationAsRead, markAllNotificationsAsRead,
     formatTZS, USD_TO_TZS,

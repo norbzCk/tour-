@@ -12,6 +12,17 @@ function Home() {
   const { formatTZS } = useData();
   const [current, setCurrent] = useState(0);
 
+  useEffect(() => {
+    if (window.location.hash === "#contacts") {
+      const el = document.getElementById("contacts");
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 100);
+      }
+    }
+  }, []);
+
   const featuredTours = [
     {
       id: 1,
@@ -352,6 +363,71 @@ function Home() {
               Create Free Account
             </Link>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Contacts Section */}
+      <section id="contacts" className="py-24 bg-white dark:bg-slate-900">
+        <div className="max-w-7xl mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+              Contact Us
+            </h2>
+            <p className="text-gray-600 dark:text-slate-400 max-w-2xl mx-auto">
+              Have questions or need help planning your trip? Reach out to us anytime.
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="text-center p-8 rounded-3xl border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-800 shadow-sm"
+            >
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-400 mb-5 text-2xl">
+                📍
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Office</h3>
+              <p className="text-gray-600 dark:text-slate-300 text-sm">123 Serengeti Street</p>
+              <p className="text-gray-600 dark:text-slate-300 text-sm">Arusha, Tanzania</p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+              className="text-center p-8 rounded-3xl border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-800 shadow-sm"
+            >
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-400 mb-5 text-2xl">
+                📞
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Phone</h3>
+              <p className="text-gray-600 dark:text-slate-300 text-sm">+255 712 345 678</p>
+              <p className="text-gray-600 dark:text-slate-300 text-sm">+255 753 987 654</p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+              className="text-center p-8 rounded-3xl border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-800 shadow-sm"
+            >
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-400 mb-5 text-2xl">
+                ✉️
+              </div>
+              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Email</h3>
+              <p className="text-gray-600 dark:text-slate-300 text-sm">info@smarttour.co.tz</p>
+              <p className="text-gray-600 dark:text-slate-300 text-sm">support@smarttour.co.tz</p>
+            </motion.div>
+          </div>
         </div>
       </section>
     </div>

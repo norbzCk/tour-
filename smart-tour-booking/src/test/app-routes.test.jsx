@@ -1,5 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import App from '../App';
 
 describe('App routes', () => {
@@ -27,5 +27,22 @@ describe('App routes', () => {
     render(<App />);
 
     expect(screen.getByText(/Why travelers choose SmartTour/i)).toBeInTheDocument();
+  });
+
+  it('redirects a tourist to My Bookings after login when they have prior bookings', async () => {
+    window.history.pushState({}, '', '/login');
+    render(<App />);
+
+    fireEvent.change(screen.getByPlaceholderText('you@example.com'), {
+      target: { value: 'sarah@example.com' },
+    });
+    fireEvent.change(screen.getByPlaceholderText('••••••••'), {
+      target: { value: 'password123' },
+    });
+    fireEvent.submit(screen.getByPlaceholderText('you@example.com').closest('form'));
+
+    await waitFor(() => {
+      expect(screen.getByText(/My Bookings/i)).toBeInTheDocument();
+    }, { timeout: 3000 });
   });
 });

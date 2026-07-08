@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="700" viewBox="0 0 1200 700">
+  <rect width="1200" height="700" fill="#f8fafc"/>
+  <rect x="90" y="70" width="1020" height="560" rx="28" fill="white" stroke="#d1fae5" stroke-width="3"/>
+  <rect x="120" y="100" width="960" height="240" rx="24" fill="#ecfdf5"/>
+  <text x="180" y="175" font-family="Arial, sans-serif" font-size="30" font-weight="700" fill="#0f172a">Tour Title</text>
+  <text x="180" y="220" font-family="Arial, sans-serif" font-size="22" fill="#64748b">Destination • Duration • Price</text>
+  <rect x="140" y="380" width="320" height="180" rx="20" fill="#f8fafc" stroke="#cbd5e1"/>
+  <rect x="500" y="380" width="240" height="180" rx="20" fill="#f8fafc" stroke="#cbd5e1"/>
+  <rect x="780" y="380" width="240" height="180" rx="20" fill="#16a34a"/>
+  <text x="900" y="470" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="700" fill="white">Book Now</text>
+  <text x="600" y="620" text-anchor="middle" font-family="Arial, sans-serif" font-size="18" fill="#64748b">Screenshot placeholder</text>
+</svg>
