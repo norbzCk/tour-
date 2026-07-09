@@ -394,8 +394,8 @@ function Home() {
                 📍
               </div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Office</h3>
-              <p className="text-gray-600 dark:text-slate-300 text-sm">123 Serengeti Street</p>
-              <p className="text-gray-600 dark:text-slate-300 text-sm">Arusha, Tanzania</p>
+              <p className="text-gray-600 dark:text-slate-300 text-sm">123 Shabaan Robert Street</p>
+              <p className="text-gray-600 dark:text-slate-300 text-sm">Dar es Salaam, Tanzania</p>
             </motion.div>
 
             <motion.div
@@ -409,8 +409,10 @@ function Home() {
                 📞
               </div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Phone</h3>
-              <p className="text-gray-600 dark:text-slate-300 text-sm">+255 712 345 678</p>
-              <p className="text-gray-600 dark:text-slate-300 text-sm">+255 753 987 654</p>
+              <p className="text-gray-600 dark:text-slate-300 text-sm">+255 774 458 938</p>
+              <p className="text-gray-600 dark:text-slate-300 text-sm">+255 788 417 749</p>
+              <p className="text-gray-600 dark:text-slate-300 text-sm">+255 745 691 504</p>
+
             </motion.div>
 
             <motion.div
