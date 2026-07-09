@@ -172,7 +172,7 @@ function Reports() {
 
         <div className={`rounded-2xl shadow-sm border p-6 md:col-span-2 ${isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}>
           <h3 className={`text-lg font-bold mb-4 ${isDark ? "text-white" : "text-gray-800"}`}>Tours by Category</h3>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {Object.entries(categoryBreakdown).map(([ cat, count ]) => (
               <div key={cat} className={`p-4 rounded-xl border ${isDark ? "bg-gray-700 border-gray-600" : "bg-gray-50 border-gray-100"}`}>
                 <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-500"}`}>{cat}</p>

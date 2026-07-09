@@ -21,7 +21,7 @@ function StatCard({ icon, title, value }) {
             {title}
           </p>
 
-          <h2 className={`text-4xl font-bold mt-2 ${isDark ? "text-white" : "text-gray-900"}`}>
+          <h2 className={`text-2xl md:text-4xl font-bold mt-2 ${isDark ? "text-white" : "text-gray-900"}`}>
             {value}
           </h2>
         </div>

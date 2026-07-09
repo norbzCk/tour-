@@ -77,7 +77,7 @@ function Register() {
         className="w-full max-w-md bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/50 dark:border-gray-700/50"
       >
         <div className="text-center mb-8">
-          <img src="/Logo.png" alt="SmartTour" className="w-16 h-16 object-contain mx-auto mb-4" />
+           <img src="/Logo.png" alt="SmartTour" className="w-16 h-16 object-contain mx-auto mb-4" />
           <h1 className="text-3xl font-extrabold text-gray-900 dark:text-white">Join SmartTour</h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
             Create your account and start exploring Tanzania

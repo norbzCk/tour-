@@ -24,7 +24,7 @@ function Tours() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-slate-900 dark:to-slate-950 transition-colors duration-300">
-      <div className="relative bg-gradient-to-br from-green-600 to-emerald-700 text-white py-20 overflow-hidden">
+      <div className="relative bg-gradient-to-br from-green-600 to-emerald-700 text-white py-12 md:py-20 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
             <path d="M0,0 L100,0 L100,100 Q50,85 0,100 Z" fill="white" />
@@ -69,7 +69,7 @@ function Tours() {
 
           <div className="relative">
             <select
-              className="appearance-none px-5 py-3.5 rounded-2xl border border-gray-200 dark:border-slate-800 focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-950/20 focus:border-green-500 transition bg-white dark:bg-slate-800 dark:text-white shadow-md pr-12 min-w-[200px]"
+               className="appearance-none px-5 py-3.5 rounded-2xl border border-gray-200 dark:border-slate-800 focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-950/20 focus:border-green-500 transition bg-white dark:bg-slate-800 dark:text-white shadow-md pr-12 min-w-0 w-full sm:w-auto"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
             >

@@ -58,7 +58,7 @@ function Login() {
       >
         <div className="text-center mb-8">
           <motion.img
-            src="/Logo.png"
+             src="/Logo.png"
             alt="SmartTour"
             initial={{ scale: 0, rotate: -180 }}
             animate={{ scale: 1, rotate: 0 }}
@@ -212,7 +212,7 @@ function Login() {
             </div>
           </div>
 
-          <div className="mt-6 grid grid-cols-2 gap-3">
+           <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
             <button className="flex items-center justify-center gap-3 border border-gray-200 dark:border-slate-700 rounded-xl py-2.5 text-sm font-medium bg-white dark:bg-slate-900 dark:text-white hover:bg-gray-50 dark:hover:bg-slate-800 transition">
               <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" className="h-5 w-5" />
               Google

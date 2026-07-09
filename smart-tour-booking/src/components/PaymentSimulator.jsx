@@ -274,7 +274,7 @@ function PaymentSimulator({ amount, amountLabel, initialPhone = "", onSuccess, o
 
       {/* Step 1: method selection */}
       {step === "select" && (
-        <div className="grid grid-cols-2 gap-3">
+         <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {PAYMENT_METHODS.map((m) => (
             <button
               key={m.id}

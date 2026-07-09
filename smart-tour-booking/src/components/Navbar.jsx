@@ -4,8 +4,6 @@ import { useAuth } from "../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useData } from "../context/DataContext";
 import { useTheme } from "../context/ThemeContext";
-import { useAssistant } from "../context/AssistantContext";
-import AssistantOrb from "./AssistantOrb";
 import { 
   FaSun, 
   FaMoon, 
@@ -24,7 +22,6 @@ import {
 
 function Navbar() {
   const { user, logout } = useAuth();
-  const { openAssistant } = useAssistant();
   const { bookings, notifications, markNotificationAsRead, markAllNotificationsAsRead } = useData();
   const { theme, toggleTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -106,7 +103,7 @@ function Navbar() {
             <Link to="/" className="flex items-center gap-3 group">
               <div className="relative">
                 <img 
-                  src="/Logo.png" 
+                   src="/Logo.png" 
                   alt="SmartTour" 
                   className="w-14 h-14 object-contain rounded-2xl shadow-md border border-gray-200/60 dark:border-slate-850 transition-transform duration-300 group-hover:scale-105" 
                 />
@@ -387,7 +384,6 @@ function Navbar() {
                   </AnimatePresence>
                 </div>
               )}
-              <AssistantOrb onClick={openAssistant} className="h-10 w-10" label="AI Assistant" />
             </div>
 
             {/* Mobile Actions and triggers */}
@@ -408,7 +404,6 @@ function Navbar() {
               >
                 {mobileOpen ? <FaTimes className="w-4 h-4" /> : <FaBars className="w-4 h-4" />}
               </button>
-              <AssistantOrb onClick={openAssistant} className="h-9 w-9" label="AI Assistant" />
             </div>
 
           </div>

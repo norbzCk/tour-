@@ -58,7 +58,7 @@ function TourDetails() {
   return (
     <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors duration-300">
       {/* Hero Header Area with Interactive Carousel */}
-      <div className="relative h-[480px] overflow-hidden">
+      <div className="relative h-[40vh] min-h-[300px] md:h-[480px] overflow-hidden">
         <motion.img
           key={currentIndex}
           src={gallery[currentIndex] || tour.image}
@@ -188,7 +188,7 @@ function TourDetails() {
 
             <div>
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">What's Included</h3>
-              <div className="grid grid-cols-2 gap-x-4 gap-y-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3">
                 {features.map((item, index) => (
                   <motion.div
                     key={item}

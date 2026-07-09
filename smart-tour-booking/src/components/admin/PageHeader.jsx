@@ -9,7 +9,7 @@ function PageHeader({
     <div className="mb-8">
 
       <h1 className={`
-      text-4xl
+      text-2xl md:text-4xl
       font-bold
       ${isDark ? "text-white" : "text-slate-800"}
       `}>

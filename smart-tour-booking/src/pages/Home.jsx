@@ -3,7 +3,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useData } from "../context/DataContext";
 import { useAssistant } from "../context/AssistantContext";
-import { FaRobot } from "react-icons/fa";
 import heroImage from "../assets/hero.png";
 import baladiniBeach from "../assets/Baladini Zanzibar beach vacation.jpeg";
 import queenHotel from "../assets/Queen hotel in Zanzibar.jpeg";
@@ -93,7 +92,7 @@ function Home() {
   return (
     <div className="bg-white dark:bg-slate-900 transition-colors duration-300 overflow-x-hidden">
       {/* Hero Section */}
-      <section className="relative h-[75vh] min-h-[550px] max-h-[720px] flex items-center overflow-hidden">
+      <section className="relative h-[75vh] min-h-[300px] md:min-h-[550px] max-h-[720px] flex items-center overflow-hidden">
         <AnimatePresence mode="popLayout">
           <motion.div
             key={current}
@@ -151,7 +150,7 @@ function Home() {
                 className="bg-gradient-to-r from-green-500/80 via-emerald-500/80 to-teal-500/80 backdrop-blur-md border border-white/30 text-white px-7 py-3.5 rounded-2xl font-bold hover:bg-white/20 transition-all flex items-center gap-2 animate-live-gradient whitespace-nowrap"
               >
                 Get AI Assistant
-                <FaRobot className="h-4 w-4" />
+                {/* <img src="/rafiki.png" alt="RafikiChat" className="h-4 w-4 object-contain" /> */}
               </button>
             </div>
           </motion.div>
@@ -172,14 +171,14 @@ function Home() {
       </section>
 
       {/* Featured Tours */}
-      <section className="max-w-7xl mx-auto px-6 py-24">
+      <section className="max-w-7xl mx-auto px-6 py-12 md:py-24">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-10 md:mb-16"
         >
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Featured Experiences
           </h2>
           <p className="text-gray-600 dark:text-slate-450 max-w-2xl mx-auto">
@@ -244,14 +243,14 @@ function Home() {
       </section>
 
       {/* Popular Destinations */}
-      <section className="max-w-7xl mx-auto px-6 py-16">
+      <section className="max-w-7xl mx-auto px-6 py-12 md:py-16">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-14"
+          className="text-center mb-10 md:mb-14"
         >
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-3">
             Popular Destinations
           </h2>
           <p className="text-gray-600 dark:text-slate-400">From pristine beaches to breathtaking savannas</p>
@@ -266,7 +265,7 @@ function Home() {
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
               whileHover={{ y: -10 }}
-              className="group relative h-80 rounded-3xl overflow-hidden cursor-pointer shadow-lg border border-gray-100 dark:border-slate-800"
+              className="group relative h-64 md:h-80 rounded-3xl overflow-hidden cursor-pointer shadow-lg border border-gray-100 dark:border-slate-800"
             >
               <img
                 src={dest.image}
@@ -274,8 +273,8 @@ function Home() {
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent"></div>
-              <div className="absolute bottom-0 left-0 p-6 text-white">
-                <h3 className="font-bold text-2xl mb-1">{dest.name}</h3>
+              <div className="absolute bottom-0 left-0 p-4 md:p-6 text-white">
+                <h3 className="font-bold text-xl md:text-2xl mb-1">{dest.name}</h3>
                 <p className="text-white/85 text-sm">{dest.desc}</p>
               </div>
             </motion.div>
@@ -284,14 +283,14 @@ function Home() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="max-w-7xl mx-auto px-6 py-20">
+      <section className="max-w-7xl mx-auto px-6 py-12 md:py-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className="text-center mb-10 md:mb-16"
         >
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
+          <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-3">
             Why Choose SmartTour?
           </h2>
           <p className="text-gray-600 dark:text-slate-400 max-w-2xl mx-auto">
@@ -326,7 +325,7 @@ function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.15 }}
-              className="group bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-lg border border-gray-100 dark:border-slate-800/80 text-center transition-all duration-300"
+              className="group bg-white dark:bg-slate-800 p-6 md:p-8 rounded-3xl shadow-lg border border-gray-100 dark:border-slate-800/80 text-center transition-all duration-300"
             >
               <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br ${feature.color} mb-5 shadow-lg group-hover:scale-110 transition-transform`}>
                 <span className="text-3xl">{feature.icon}</span>
@@ -339,7 +338,7 @@ function Home() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 bg-gradient-to-br from-green-600 via-emerald-700 to-teal-700 relative overflow-hidden">
+      <section className="py-12 md:py-24 bg-gradient-to-br from-green-600 via-emerald-700 to-teal-700 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
             <path d="M0,0 L100,0 L100,100 Q50,85 0,100 Z" fill="white" />
@@ -351,10 +350,10 @@ function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
+            <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-6 leading-tight">
               Ready For Your Next Adventure?
             </h2>
-            <p className="text-green-100 mb-10 text-lg max-w-2xl mx-auto">
+            <p className="text-green-100 mb-10 text-base md:text-lg max-w-2xl mx-auto">
               Join thousands of travelers exploring Tanzania with SmartTour.
             </p>
             <Link
@@ -368,15 +367,15 @@ function Home() {
       </section>
 
       {/* Contacts Section */}
-      <section id="contacts" className="py-24 bg-white dark:bg-slate-900">
+      <section id="contacts" className="py-12 md:py-24 bg-white dark:bg-slate-900">
         <div className="max-w-7xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-16"
+            className="text-center mb-10 md:mb-16"
           >
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
               Contact Us
             </h2>
             <p className="text-gray-600 dark:text-slate-400 max-w-2xl mx-auto">
@@ -384,17 +383,17 @@ function Home() {
             </p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-3 gap-6 md:gap-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="text-center p-8 rounded-3xl border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-800 shadow-sm"
+              className="text-center p-6 md:p-8 rounded-3xl border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-800 shadow-sm"
             >
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-400 mb-5 text-2xl">
                 📍
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Office</h3>
+                  <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-2">Office</h3>
               <p className="text-gray-600 dark:text-slate-300 text-sm">123 Shabaan Robert Street</p>
               <p className="text-gray-600 dark:text-slate-300 text-sm">Dar es Salaam, Tanzania</p>
             </motion.div>
@@ -404,12 +403,12 @@ function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.1 }}
-              className="text-center p-8 rounded-3xl border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-800 shadow-sm"
+              className="text-center p-6 md:p-8 rounded-3xl border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-800 shadow-sm"
             >
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-400 mb-5 text-2xl">
                 📞
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Phone</h3>
+              <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-2">Phone</h3>
               <p className="text-gray-600 dark:text-slate-300 text-sm">+255 774 458 938</p>
               <p className="text-gray-600 dark:text-slate-300 text-sm">+255 788 417 749</p>
               <p className="text-gray-600 dark:text-slate-300 text-sm">+255 745 691 504</p>
@@ -421,12 +420,12 @@ function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
-              className="text-center p-8 rounded-3xl border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-800 shadow-sm"
+              className="text-center p-6 md:p-8 rounded-3xl border border-gray-100 dark:border-slate-800 bg-white dark:bg-slate-800 shadow-sm"
             >
               <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-400 mb-5 text-2xl">
                 ✉️
               </div>
-              <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">Email</h3>
+              <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-white mb-2">Email</h3>
               <p className="text-gray-600 dark:text-slate-300 text-sm">info@smarttour.co.tz</p>
               <p className="text-gray-600 dark:text-slate-300 text-sm">support@smarttour.co.tz</p>
             </motion.div>

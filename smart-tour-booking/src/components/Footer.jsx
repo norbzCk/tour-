@@ -61,7 +61,7 @@ function Footer() {
 
   return (
     <footer className={`relative transition-colors duration-300 ${isDark ? "bg-slate-950 text-gray-300" : "bg-gray-50 text-gray-600"}`}>
-      <div className="max-w-7xl mx-auto px-6 py-16 grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+      <div className="max-w-7xl mx-auto px-6 py-12 md:py-16 grid md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
         {/* Brand */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -70,7 +70,7 @@ function Footer() {
           className="md:col-span-1"
         >
           <Link to="/" className="flex items-center gap-3 mb-6">
-            <img src="/Logo.png" alt="SmartTour" className="w-12 h-12 object-contain rounded-2xl shadow-lg" />
+             <img src="/Logo.png" alt="SmartTour" className="w-12 h-12 object-contain rounded-2xl shadow-lg" />
             <span className={`text-2xl font-extrabold ${isDark ? "text-white" : "text-gray-900"}`}>SmartTour</span>
           </Link>
           <p className={`text-sm leading-relaxed mb-6 ${isDark ? "text-gray-400" : "text-gray-500"}`}>

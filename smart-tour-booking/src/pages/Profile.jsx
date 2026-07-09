@@ -29,7 +29,7 @@ function Profile() {
           className="space-y-8"
         >
           <div>
-            <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-2">My Profile</h1>
+             <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-2">My Profile</h1>
             <p className="text-gray-600 dark:text-slate-400">Manage your personal information</p>
           </div>
 
