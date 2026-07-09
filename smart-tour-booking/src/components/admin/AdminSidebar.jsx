@@ -24,9 +24,9 @@ function AdminSidebar() {
   ];
 
   return (
-    <aside className={`w-72 shadow-xl min-h-screen flex flex-col transition-colors duration-300 ${isDark ? "bg-gray-800 border-r border-gray-700" : "bg-white border-r border-gray-200"}`}>
+    <aside className={`w-64 shadow-xl min-h-screen flex flex-col transition-colors duration-300 ${isDark ? "bg-gray-800 border-r border-gray-700" : "bg-white border-r border-gray-200"}`}>
       <div className={`p-6 border-b ${isDark ? "border-gray-700" : "border-gray-200"}`}>
-        <h2 className={`text-xl font-extrabold ${isDark ? "text-white" : "text-gray-900"}`}>Admin Panel</h2>
+        <h2 className={`text-sm font-extrabold uppercase tracking-wider ${isDark ? "text-gray-300" : "text-gray-600"}`}>Admin</h2>
       </div>
 
       <nav className="flex-1 p-4 space-y-1">

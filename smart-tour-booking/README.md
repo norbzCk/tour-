@@ -185,7 +185,8 @@ smart-tour-booking/
 │   │   └── useToast.js            # Toast notification hook
 │   │
 │   ├── services/                  # Business logic services
-│   │   ├── paymentService.js      # Multi-method payment processing (M-Pesa, Airtel, Card, Bank)
+│   │   ├── bookingService.js      # Booking operations
+│   │   ├── paymentService.js      # Payment processing
 │   │   └── notificationService.js # Notification handling
 │   │
 │   ├── data/                      # Mock/static data

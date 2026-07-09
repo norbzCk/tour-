@@ -93,28 +93,28 @@ function Navbar() {
       animate={{ y: 0, opacity: 1 }}
       className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-gray-150 dark:border-slate-800/80 sticky top-0 z-50 transition-all duration-300 shadow-[0_2px_15px_-3px_rgba(0,0,0,0.03),0_4px_6px_-2px_rgba(0,0,0,0.01)]"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+      <div className="w-full">
+        <div className="flex items-center h-20">
           
-          {/* Left Side: Logo */}
-          <div className="flex-1 flex justify-start items-center">
+          {/* Left Side: Logo with divider */}
+          <div className="w-64 flex items-center border-r border-gray-200 dark:border-slate-800 px-8 pr-6">
             <Link to="/" className="flex items-center gap-3 group">
               <div className="relative">
                 <img 
                   src="/Logo.png" 
                   alt="SmartTour" 
-                  className="w-11 h-11 md:w-13 md:h-13 object-contain rounded-2xl shadow-md border border-gray-200/60 dark:border-slate-850 transition-transform duration-300 group-hover:scale-105" 
+                  className="w-14 h-14 object-contain rounded-2xl shadow-md border border-gray-200/60 dark:border-slate-850 transition-transform duration-300 group-hover:scale-105" 
                 />
                 <div className="absolute inset-0 bg-green-500/10 dark:bg-emerald-500/10 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
               </div>
-              <span className="text-lg md:text-xl font-black bg-gradient-to-r from-green-600 via-emerald-500 to-teal-600 bg-clip-text text-transparent tracking-tight hidden sm:block transition-all duration-300 group-hover:brightness-110">
+              <span className="text-2xl font-black bg-gradient-to-r from-green-600 via-emerald-500 to-teal-600 bg-clip-text text-transparent tracking-tight hidden sm:block transition-all duration-300 group-hover:brightness-110">
                 SmartTour
               </span>
             </Link>
           </div>
 
           {/* Center Side: Links */}
-          <div className="hidden md:flex items-center justify-center gap-1 xl:gap-1.5 flex-initial">
+          <div className="hidden md:flex items-center justify-center gap-4 flex-1 px-8">
             {allNavItems.map((item) => {
               const active = checkActive(item);
               return (
@@ -141,11 +141,10 @@ function Navbar() {
           </div>
 
           {/* Right Side: Actions (SignIn, GetStarted, Theme, Profile) */}
-          <div className="flex-1 flex justify-end items-center gap-2 md:gap-3">
+          <div className="w-64 flex justify-end items-center gap-5 px-8">
             
             {/* Desktop Actions */}
-            <div className="hidden md:flex items-center gap-3">
-              
+              <div className="hidden md:flex items-center gap-4">
               {/* Theme Toggle */}
               <button
                 onClick={toggleTheme}
@@ -267,7 +266,7 @@ function Navbar() {
                       setProfileOpen(!profileOpen);
                       setNotificationsOpen(false);
                     }}
-                    className={`flex items-center gap-2.5 pl-1.5 pr-3 py-1.5 rounded-xl border border-transparent dark:border-slate-800 hover:border-gray-200 hover:bg-gray-100/50 dark:hover:bg-slate-800/60 transition-all duration-200 cursor-pointer ${
+                    className={`flex items-center gap-2.5 pl-2 pr-4 py-1.5 rounded-xl border border-transparent dark:border-slate-800 hover:border-gray-200 hover:bg-gray-100/50 dark:hover:bg-slate-800/60 transition-all duration-200 cursor-pointer ${
                       profileOpen ? "border-gray-200 bg-gray-100/50 dark:border-slate-800 dark:bg-slate-800/60" : ""
                     }`}
                   >

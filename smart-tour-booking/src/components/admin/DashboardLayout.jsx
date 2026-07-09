@@ -8,7 +8,7 @@ function DashboardLayout() {
     <div className={`flex min-h-screen transition-colors duration-300 ${isDark ? "bg-gray-900" : "bg-slate-50"}`}>
       <AdminSidebar />
       <main className="flex-1 p-8 overflow-auto">
-        <div className="max-w-7xl mx-auto">
+        <div className="w-full">
           <Outlet />
         </div>
       </main>

@@ -8,6 +8,10 @@ export default defineConfig({
   server: {
     port: 5171,
   },
+  preview: {
+    host: true,
+    allowedHosts: ['tour-1-vjy4.onrender.com'],
+  },
   test: {
     environment: 'jsdom',
     globals: true,
