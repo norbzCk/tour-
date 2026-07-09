@@ -4,22 +4,27 @@ import { useAuth } from "../context/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import { useData } from "../context/DataContext";
 import { useTheme } from "../context/ThemeContext";
+import { useAssistant } from "../context/AssistantContext";
+import AssistantOrb from "./AssistantOrb";
 import { 
   FaSun, 
   FaMoon, 
   FaBell, 
   FaUser, 
   FaCalendarAlt, 
-  FaSignOutAlt, 
-  FaCog, 
-  FaBars, 
+  FaSignOutAlt,
+  FaCog,
+  FaBars,
   FaTimes,
   FaShieldAlt,
-  FaChevronDown
+  FaChevronDown,
+  FaSignInAlt,
+  FaUserPlus
 } from "react-icons/fa";
 
 function Navbar() {
   const { user, logout } = useAuth();
+  const { openAssistant } = useAssistant();
   const { bookings, notifications, markNotificationAsRead, markAllNotificationsAsRead } = useData();
   const { theme, toggleTheme } = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -97,7 +102,7 @@ function Navbar() {
         <div className="flex items-center h-20">
           
           {/* Left Side: Logo with divider */}
-          <div className="w-64 flex items-center border-r border-gray-200 dark:border-slate-800 px-8 pr-6">
+          <div className="w-auto md:w-64 flex items-center border-r border-gray-200 dark:border-slate-800 px-4 md:px-8 md:pr-6">
             <Link to="/" className="flex items-center gap-3 group">
               <div className="relative">
                 <img 
@@ -141,7 +146,7 @@ function Navbar() {
           </div>
 
           {/* Right Side: Actions (SignIn, GetStarted, Theme, Profile) */}
-          <div className="w-64 flex justify-end items-center gap-5 px-8">
+          <div className="w-auto md:w-64 flex justify-end items-center gap-3 md:gap-5 px-4 md:px-8">
             
             {/* Desktop Actions */}
               <div className="hidden md:flex items-center gap-4">
@@ -248,14 +253,16 @@ function Navbar() {
                 <>
                   <Link
                     to="/login"
-                    className="px-4 py-2.5 rounded-xl text-xs xl:text-sm font-bold text-gray-700 dark:text-slate-300 hover:text-green-600 dark:hover:text-emerald-400 hover:bg-gray-100/70 dark:hover:bg-slate-800/60 transition-colors active:scale-95 cursor-pointer"
+                    className="group flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap border border-gray-200 dark:border-slate-700 text-gray-700 dark:text-slate-200 hover:bg-green-50 hover:text-green-700 hover:border-green-300 dark:hover:bg-emerald-900/30 dark:hover:text-emerald-300 dark:hover:border-emerald-700 shadow-sm hover:shadow-md active:scale-95 transition-all duration-200 cursor-pointer animate-live-glow"
                   >
+                    <FaSignInAlt className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                     Sign In
                   </Link>
                   <Link
                     to="/register"
-                    className="px-4.5 py-2.5 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white rounded-xl text-xs xl:text-sm font-black hover:shadow-lg hover:shadow-green-500/20 dark:hover:shadow-emerald-950/20 hover:brightness-105 active:scale-97 transition-all duration-200 cursor-pointer"
+                    className="group flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white rounded-xl text-sm font-black shadow-md shadow-green-500/20 hover:shadow-lg hover:shadow-green-500/30 dark:hover:shadow-emerald-950/30 hover:brightness-105 active:scale-95 transition-all duration-200 cursor-pointer animate-live-gradient whitespace-nowrap"
                   >
+                    <FaUserPlus className="w-4 h-4 transition-transform group-hover:scale-110" />
                     Get Started
                   </Link>
                 </>
@@ -380,6 +387,7 @@ function Navbar() {
                   </AnimatePresence>
                 </div>
               )}
+              <AssistantOrb onClick={openAssistant} className="h-10 w-10" label="AI Assistant" />
             </div>
 
             {/* Mobile Actions and triggers */}
@@ -400,6 +408,7 @@ function Navbar() {
               >
                 {mobileOpen ? <FaTimes className="w-4 h-4" /> : <FaBars className="w-4 h-4" />}
               </button>
+              <AssistantOrb onClick={openAssistant} className="h-9 w-9" label="AI Assistant" />
             </div>
 
           </div>
@@ -460,15 +469,17 @@ function Navbar() {
                     <Link
                       to="/login"
                       onClick={() => setMobileOpen(false)}
-                      className="flex-1 text-center px-4 py-2.5 rounded-xl text-sm font-bold text-gray-700 dark:text-slate-300 border border-gray-200 dark:border-slate-800 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors"
+                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap text-gray-700 dark:text-slate-200 border border-gray-200 dark:border-slate-800 hover:bg-green-50 hover:text-green-700 hover:border-green-300 dark:hover:bg-emerald-900/30 dark:hover:text-emerald-300 transition-colors animate-live-glow"
                     >
+                      <FaSignInAlt className="w-4 h-4" />
                       Sign In
                     </Link>
                     <Link
                       to="/register"
                       onClick={() => setMobileOpen(false)}
-                      className="flex-1 text-center px-4 py-2.5 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white rounded-xl text-sm font-black shadow-md hover:shadow-lg transition animate-pulse"
+                      className="flex-1 flex items-center justify-center gap-2 px-4 py-2.5 bg-gradient-to-r from-green-600 via-emerald-600 to-teal-600 text-white rounded-xl text-sm font-black shadow-md hover:shadow-lg transition animate-live-gradient whitespace-nowrap"
                     >
+                      <FaUserPlus className="w-4 h-4" />
                       Get Started
                     </Link>
                   </motion.div>

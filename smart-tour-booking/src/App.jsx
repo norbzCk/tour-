@@ -3,7 +3,10 @@ import { AuthProvider, useAuth } from "./context/AuthContext";
 import { DataProvider } from "./context/DataContext";
 import { ThemeProvider } from "./context/ThemeContext";
 import { ToastProvider } from "./components/ToastProvider";
+import { AssistantProvider } from "./context/AssistantContext";
 import Navbar from "./components/Navbar";
+import ScrollToTop from "./components/ScrollToTop";
+import AiAssistant from "./components/AiAssistant";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -187,19 +190,23 @@ function AppRoutes() {
 
 function App() {
   return (
-    <ThemeProvider>
-      <AuthProvider>
-        <DataProvider>
-          <ToastProvider>
-            <BrowserRouter>
-              <Navbar />
-              <AppRoutes />
-              <Footer />
-            </BrowserRouter>
-          </ToastProvider>
-        </DataProvider>
-      </AuthProvider>
-    </ThemeProvider>
+    <AssistantProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <DataProvider>
+            <ToastProvider>
+              <BrowserRouter>
+                <ScrollToTop />
+                <Navbar />
+                <AppRoutes />
+                <Footer />
+                <AiAssistant />
+              </BrowserRouter>
+            </ToastProvider>
+          </DataProvider>
+        </AuthProvider>
+      </ThemeProvider>
+    </AssistantProvider>
   );
 }
 

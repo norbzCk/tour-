@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { useData } from "../context/DataContext";
+import { useAssistant } from "../context/AssistantContext";
+import { FaRobot } from "react-icons/fa";
 import heroImage from "../assets/hero.png";
 import baladiniBeach from "../assets/Baladini Zanzibar beach vacation.jpeg";
 import queenHotel from "../assets/Queen hotel in Zanzibar.jpeg";
@@ -10,6 +12,7 @@ import nungwiBeach from "../assets/NUNGWI BEACH - ZANZIBAR.jpeg";
 
 function Home() {
   const { formatTZS } = useData();
+  const { openAssistant } = useAssistant();
   const [current, setCurrent] = useState(0);
 
   useEffect(() => {
@@ -123,7 +126,7 @@ function Home() {
 
             <h1 className="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight drop-shadow-2xl">
               Explore Tanzania <br />
-              <span className="bg-gradient-to-r from-green-300 to-emerald-400 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-green-300 via-emerald-400 to-teal-300 bg-clip-text text-transparent animate-live-shimmer">
                 With SmartTour
               </span>
             </h1>
@@ -135,7 +138,7 @@ function Home() {
             <div className="flex flex-wrap gap-4">
               <Link
                 to="/tours"
-                className="group bg-white text-green-700 dark:bg-green-600 dark:text-white px-7 py-3.5 rounded-2xl font-bold hover:bg-green-50 dark:hover:bg-green-500 transition-all shadow-xl hover:shadow-green-500/20 flex items-center gap-2"
+                className="group bg-white text-green-700 dark:bg-green-600 dark:text-white px-7 py-3.5 rounded-2xl font-bold hover:bg-green-50 dark:hover:bg-green-500 transition-all shadow-xl hover:shadow-green-500/20 flex items-center gap-2 animate-live-glow whitespace-nowrap"
               >
                 Browse Tours
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -143,15 +146,13 @@ function Home() {
                 </svg>
               </Link>
 
-              <Link
-                to="/register"
-                className="bg-white/10 backdrop-blur-md border border-white/30 text-white px-7 py-3.5 rounded-2xl font-bold hover:bg-white/20 transition-all flex items-center gap-2"
+              <button
+                onClick={openAssistant}
+                className="bg-gradient-to-r from-green-500/80 via-emerald-500/80 to-teal-500/80 backdrop-blur-md border border-white/30 text-white px-7 py-3.5 rounded-2xl font-bold hover:bg-white/20 transition-all flex items-center gap-2 animate-live-gradient whitespace-nowrap"
               >
-                Get Started
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
-              </Link>
+                Get AI Assistant
+                <FaRobot className="h-4 w-4" />
+              </button>
             </div>
           </motion.div>
         </div>

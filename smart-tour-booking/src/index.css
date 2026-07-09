@@ -74,6 +74,34 @@ body {
   overflow: hidden;
 }
 
+/* Live ongoing animations */
+@keyframes liveGradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animate-live-gradient {
+  background-size: 200% 200%;
+  animation: liveGradientShift 3.5s ease infinite;
+}
+
+@keyframes liveGlowPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.45); }
+  50% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+}
+.animate-live-glow {
+  animation: liveGlowPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes liveShimmer {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+.animate-live-shimmer {
+  background-size: 200% auto;
+  animation: liveShimmer 4s linear infinite;
+}
+
 /* Safari-specific fixes */
 .safari-fix {
   -webkit-transform: translateZ(0);
