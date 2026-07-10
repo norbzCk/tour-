@@ -10,7 +10,7 @@ import makunduchi from "../assets/MAKUNDUCHI-ZANZIBAR.jpeg";
 import nungwiBeach from "../assets/NUNGWI BEACH - ZANZIBAR.jpeg";
 
 function Home() {
-  const { formatTZS } = useData();
+  const { formatTZS, getReviewsByTourId } = useData();
   const { openAssistant } = useAssistant();
   const [current, setCurrent] = useState(0);
 
@@ -187,7 +187,12 @@ function Home() {
         </motion.div>
 
         <div className="grid md:grid-cols-3 gap-8">
-          {featuredTours.map((tour, index) => (
+          {featuredTours.map((tour, index) => {
+            const tourReviews = getReviewsByTourId(tour.id);
+            const avgRating = tourReviews.length > 0
+              ? (tourReviews.reduce((sum, r) => sum + r.rating, 0) / tourReviews.length).toFixed(1)
+              : tour.rating;
+            return (
             <motion.div
               key={tour.id}
               custom={index}
@@ -218,11 +223,11 @@ function Home() {
                     📍 {tour.destination}
                   </span>
                   <div className="flex items-center gap-1 text-gray-500 dark:text-slate-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.56-.921 1.86 0l1.07 3.292a1 1 0 00.97.69h3.193c.97 0 1.371 1.24.588 1.81v.015c-.243.117-.513.78-.028 1.211l1.293 1.293c.329.329.123 1.414-.588 1.414H9.05c-.97 0-1.371-1.24-.588-1.81v-.015c.243-.117.513-.78.028-1.211L6.757 8.743c-.329-.329-.123-1.414.588-1.414h3.193c.3 0 .57-.269.646-.59l1.07-3.292z" />
-                    </svg>
-                    <span className="text-xs font-medium">{tour.rating}</span>
-                  </div>
+                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                       <path d="M9.049 2.927c.3-.921 1.56-.921 1.86 0l1.07 3.292a1 1 0 00.97.69h3.193c.97 0 1.371 1.24.588 1.81v.015c-.243.117-.513.78-.028 1.211l1.293 1.293c.329.329.123 1.414-.588 1.414H9.05c-.97 0-1.371-1.24-.588-1.81v-.015c.243-.117.513-.78.028-1.211L6.757 8.743c-.329-.329-.123-1.414.588-1.414h3.193c.3 0 .57-.269.646-.59l1.07-3.292z" />
+                     </svg>
+                     <span className="text-xs font-medium">{avgRating}</span>
+                   </div>
                 </div>
 
                 <h3 className="font-bold text-xl text-gray-900 dark:text-white mb-4 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors">
@@ -238,8 +243,9 @@ function Home() {
                 </Link>
               </div>
             </motion.div>
-          ))}
-        </div>
+          );
+        })}
+      </div>
       </section>
 
       {/* Popular Destinations */}

@@ -14,9 +14,39 @@ function Register() {
   const [loading, setLoading] = useState(false);
   const [role, setRole] = useState("tourist");
 
+  const validateStepOne = (form) => {
+    const name = form.name.value.trim();
+    const email = form.email.value.trim();
+    const password = form.password.value;
+    const confirmPassword = form.confirmPassword.value;
+
+    if (!name || !email || !password || !confirmPassword) {
+      setError("Please fill in all fields");
+      return false;
+    }
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return false;
+    }
+    if (password.length < 6) {
+      setError("Password must be at least 6 characters");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    if (step === 1) {
+      const form = e.target;
+      if (!validateStepOne(form)) return;
+      setStep(2);
+      return;
+    }
+
     if (step !== 2) return;
 
     const form = e.target;
@@ -156,22 +186,6 @@ function Register() {
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition bg-gray-50/50 dark:bg-gray-700/50 dark:text-white"
                 />
               </div>
-              <button
-                type="button"
-                onClick={() => setStep(2)}
-                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-green-200 dark:hover:shadow-green-900/20 transition"
-              >
-                Continue
-              </button>
-            </motion.div>
-          )}
-
-          {step === 2 && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="space-y-4"
-            >
               <div>
                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Password</label>
                 <input
@@ -186,11 +200,30 @@ function Register() {
                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Confirm Password</label>
                 <input
                   type="password"
+                  name="confirmPassword"
                   placeholder="••••••••"
                   required
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-900/50 focus:border-green-500 transition bg-gray-50/50 dark:bg-gray-700/50 dark:text-white"
                 />
+                <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                  This is a front-end-only confirmation check for the demo experience.
+                </p>
               </div>
+              <button
+                type="submit"
+                className="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white py-3.5 rounded-xl font-bold hover:shadow-lg hover:shadow-green-200 dark:hover:shadow-green-900/20 transition"
+              >
+                Continue
+              </button>
+            </motion.div>
+          )}
+
+          {step === 2 && (
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="space-y-4"
+            >
               <div>
                 <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">I am a</label>
                 <select

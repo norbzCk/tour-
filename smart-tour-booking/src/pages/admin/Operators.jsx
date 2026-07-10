@@ -77,6 +77,54 @@ function Operators() {
         </button>
       </div>
 
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filtered.map((guide, i) => {
+          const stats = getGuideStats(guide.id);
+          return (
+            <motion.div
+              key={guide.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.05 }}
+              className={`rounded-2xl shadow-sm border p-6 space-y-4 ${isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white font-bold text-lg">
+                  {guide.name[0]}
+                </div>
+                <div>
+                  <h3 className={`font-bold ${isDark ? "text-white" : "text-gray-900"}`}>{guide.name}</h3>
+                  <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-500"}`}>{guide.specialty} • {guide.experience}</p>
+                </div>
+                <div className="ml-auto">
+                  <StatusBadge status={guide.status} />
+                </div>
+              </div>
+              <p className={`text-sm ${isDark ? "text-gray-300" : "text-gray-600"}`}>{guide.email}</p>
+              <p className={`text-sm ${isDark ? "text-gray-300" : "text-gray-600"}`}>{guide.phone || "No phone"}</p>
+              <div className="flex gap-4 text-sm">
+                <span className={isDark ? "text-gray-400" : "text-gray-500"}>Tours: <strong className={isDark ? "text-gray-200" : "text-gray-800"}>{stats.assignedTours}</strong></span>
+                <span className={isDark ? "text-gray-400" : "text-gray-500"}>Bookings: <strong className={isDark ? "text-gray-200" : "text-gray-800"}>{stats.relatedBookings}</strong></span>
+              </div>
+              <div className="flex gap-2 pt-2">
+                <button
+                  onClick={() => handleEdit(guide)}
+                  className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold hover:bg-blue-700 transition"
+                >
+                  Edit
+                </button>
+                <button
+                  onClick={() => handleDelete(guide.id, guide.name)}
+                  className="flex-1 px-3 py-2 bg-red-600 text-white rounded-lg text-sm font-bold hover:bg-red-700 transition"
+                >
+                  Delete
+                </button>
+              </div>
+            </motion.div>
+          );
+        })}
+      </div>
+
       {showForm && (
         <motion.form
           initial={{ opacity: 0, y: -10 }}
@@ -183,54 +231,6 @@ function Operators() {
           </div>
         </motion.form>
       )}
-
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {filtered.map((guide, i) => {
-          const stats = getGuideStats(guide.id);
-          return (
-            <motion.div
-              key={guide.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
-              className={`rounded-2xl shadow-sm border p-6 space-y-4 ${isDark ? "bg-gray-800 border-gray-700" : "bg-white border-gray-100"}`}
-            >
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-white font-bold text-lg">
-                  {guide.name[0]}
-                </div>
-                <div>
-                  <h3 className={`font-bold ${isDark ? "text-white" : "text-gray-900"}`}>{guide.name}</h3>
-                  <p className={`text-sm ${isDark ? "text-gray-400" : "text-gray-500"}`}>{guide.specialty} • {guide.experience}</p>
-                </div>
-                <div className="ml-auto">
-                  <StatusBadge status={guide.status} />
-                </div>
-              </div>
-              <p className={`text-sm ${isDark ? "text-gray-300" : "text-gray-600"}`}>{guide.email}</p>
-              <p className={`text-sm ${isDark ? "text-gray-300" : "text-gray-600"}`}>{guide.phone || "No phone"}</p>
-              <div className="flex gap-4 text-sm">
-                <span className={isDark ? "text-gray-400" : "text-gray-500"}>Tours: <strong className={isDark ? "text-gray-200" : "text-gray-800"}>{stats.assignedTours}</strong></span>
-                <span className={isDark ? "text-gray-400" : "text-gray-500"}>Bookings: <strong className={isDark ? "text-gray-200" : "text-gray-800"}>{stats.relatedBookings}</strong></span>
-              </div>
-              <div className="flex gap-2 pt-2">
-                <button
-                  onClick={() => handleEdit(guide)}
-                  className="flex-1 px-3 py-2 bg-blue-600 text-white rounded-lg text-sm font-bold hover:bg-blue-700 transition"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(guide.id, guide.name)}
-                  className="flex-1 px-3 py-2 bg-red-600 text-white rounded-lg text-sm font-bold hover:bg-red-700 transition"
-                >
-                  Delete
-                </button>
-              </div>
-            </motion.div>
-          );
-        })}
-      </div>
 
       {filtered.length === 0 && (
         <div className="text-center py-12">

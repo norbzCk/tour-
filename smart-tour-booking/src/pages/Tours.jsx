@@ -4,9 +4,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useData } from "../context/DataContext";
 
 function Tours() {
-  const { tours, formatTZS } = useData();
+  const { tours, formatTZS, getReviewsByTourId } = useData();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
+  const [season, setSeason] = useState("all");
 
   const filteredTours = tours.filter((tour) => {
     const matchesSearch =
@@ -17,10 +18,20 @@ function Tours() {
     const matchesCategory =
       category === "All" || tour.category === category;
 
-    return matchesSearch && matchesCategory;
+    const matchesSeason =
+      season === "all" || tour.season === season;
+
+    return matchesSearch && matchesCategory && matchesSeason;
   });
 
   const categories = ["All", ...new Set(tours.map((t) => t.category))];
+
+  const seasons = [
+    { value: "all", label: "All Seasons" },
+    { value: "dry", label: "☀️ Dry Season" },
+    { value: "wet", label: "🌧️ Wet Season" },
+    { value: "peak", label: "🌟 Peak Season" },
+  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-slate-900 dark:to-slate-950 transition-colors duration-300">
@@ -67,7 +78,23 @@ function Tours() {
             />
           </div>
 
-          <div className="relative">
+              <div className="flex flex-col sm:flex-row gap-3">
+                <div className="relative">
+                  <select
+                    className="appearance-none px-5 py-3.5 rounded-2xl border border-gray-200 dark:border-slate-800 focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-950/20 focus:border-green-500 transition bg-white dark:bg-slate-800 dark:text-white shadow-md pr-12 min-w-0 w-full sm:w-auto"
+                    value={season}
+                    onChange={(e) => setSeason(e.target.value)}
+                  >
+                    {seasons.map((s) => (
+                      <option key={s.value} value={s.value} className="dark:bg-slate-800 dark:text-white">{s.label}</option>
+                    ))}
+                  </select>
+                  <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                    <svg className="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </div>
             <select
                className="appearance-none px-5 py-3.5 rounded-2xl border border-gray-200 dark:border-slate-800 focus:outline-none focus:ring-4 focus:ring-green-100 dark:focus:ring-green-950/20 focus:border-green-500 transition bg-white dark:bg-slate-800 dark:text-white shadow-md pr-12 min-w-0 w-full sm:w-auto"
               value={category}
@@ -113,7 +140,12 @@ function Tours() {
               exit={{ opacity: 0 }}
               className="grid md:grid-cols-2 lg:grid-cols-3 gap-8"
             >
-              {filteredTours.map((tour, index) => (
+              {filteredTours.map((tour, index) => {
+                const tourReviews = getReviewsByTourId(tour.id);
+                const avgRating = tourReviews.length > 0
+                  ? (tourReviews.reduce((sum, r) => sum + r.rating, 0) / tourReviews.length).toFixed(1)
+                  : tour.rating;
+                return (
                 <motion.div
                   key={tour.id}
                   initial={{ opacity: 0, y: 30 }}
@@ -149,16 +181,16 @@ function Tours() {
                       {tour.title}
                     </h2>
 
-                    <div className="flex items-center gap-2 mb-4">
-                      <div className="flex items-center gap-0.5">
-                        {[...Array(5)].map((_, i) => (
-                          <svg key={i} className={`h-4 w-4 ${i < Math.floor(tour.rating) ? "text-yellow-400" : "text-gray-300 dark:text-slate-600"}`} fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.56-.921 1.86 0l1.07 3.292a1 1 0 00.97.69h3.193c.97 0 1.371 1.24.588 1.81v.015c-.243.117-.513.78-.028 1.211l1.293 1.293c.329.329.123 1.414-.588 1.414H9.05c-.97 0-1.371-1.24-.588-1.81v-.015c.243-.117.513-.78.028-1.211L6.757 8.743c-.329-.329-.123-1.414.588-1.414h3.193c.3 0 .57-.269.646-.59l1.07-3.292z" />
-                          </svg>
-                        ))}
-                      </div>
-                      <span className="text-xs text-gray-500 dark:text-slate-400 font-medium">({tour.rating})</span>
-                    </div>
+                     <div className="flex items-center gap-2 mb-4">
+                       <div className="flex items-center gap-0.5">
+                         {[...Array(5)].map((_, i) => (
+                           <svg key={i} className={`h-4 w-4 ${i < Math.floor(avgRating) ? "text-yellow-400" : "text-gray-300 dark:text-slate-600"}`} fill="currentColor" viewBox="0 0 20 20">
+                             <path d="M9.049 2.927c.3-.921 1.56-.921 1.86 0l1.07 3.292a1 1 0 00.97.69h3.193c.97 0 1.371 1.24.588 1.81v.015c-.243.117-.513.78-.028 1.211l1.293 1.293c.329.329.123 1.414-.588 1.414H9.05c-.97 0-1.371-1.24-.588-1.81v-.015c.243-.117.513-.78.028-1.211L6.757 8.743c-.329-.329-.123-1.414.588-1.414h3.193c.3 0 .57-.269.646-.59l1.07-3.292z" />
+                           </svg>
+                         ))}
+                       </div>
+                       <span className="text-xs text-gray-500 dark:text-slate-400 font-medium">({avgRating})</span>
+                     </div>
 
                     <p className="text-gray-600 dark:text-slate-300 text-sm mb-5 line-clamp-3 leading-relaxed">
                       {tour.description}
@@ -173,8 +205,9 @@ function Tours() {
                     </Link>
                   </div>
                 </motion.div>
-              ))}
-            </motion.div>
+              );
+            })}
+          </motion.div>
           )}
         </AnimatePresence>
       </div>

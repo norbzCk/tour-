@@ -3,16 +3,45 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "../context/AuthContext";
 import { useData } from "../context/DataContext";
 import { useState } from "react";
+import { FaStar, FaRegStar } from "react-icons/fa";
 
 function TourDetails() {
   const { id } = useParams();
   const { user } = useAuth();
-  const { tours, formatTZS } = useData();
+  const { tours, formatTZS, getReviewsByTourId, addReview } = useData();
   const tourId = id ? Number(id) : null;
 
   const tour = tours.find((t) => t.id === tourId);
 
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [reviewRating, setReviewRating] = useState(0);
+  const [reviewComment, setReviewComment] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const tourReviews = getReviewsByTourId(tourId);
+
+  const averageRating = tourReviews.length > 0
+    ? (tourReviews.reduce((sum, r) => sum + r.rating, 0) / tourReviews.length).toFixed(1)
+    : null;
+
+  const handleSubmitReview = (e) => {
+    e.preventDefault();
+    if (!user || reviewRating === 0 || !reviewComment.trim()) return;
+
+    addReview({
+      tourId: tour.id,
+      userId: user.email,
+      userName: user.name || user.email.split("@")[0],
+      userEmail: user.email,
+      comment: reviewComment.trim(),
+      rating: reviewRating,
+    });
+
+    setReviewComment("");
+    setReviewRating(0);
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 3000);
+  };
 
   if (!id || !tour) {
     const invalidId = id && isNaN(Number(id));
@@ -123,19 +152,15 @@ function TourDetails() {
             </h1>
             <div className="flex flex-wrap items-center gap-6 text-green-200 text-sm">
               <span className="flex items-center gap-1.5">⏱ {tour.duration}</span>
-              <span className="flex items-center gap-1.5">★ {tour.rating}</span>
-              {tour.rating && (
-                <div className="flex items-center gap-0.5">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} className={`h-4 w-4 ${i < Math.floor(tour.rating) ? "text-yellow-400" : "text-gray-400"}`} fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.56-.921 1.86 0l1.07 3.292a1 1 0 00.97.69h3.193c.97 0 1.371 1.24.588 1.81v.015c-.243.117-.513.78-.028 1.211l1.293 1.293c.329.329.123 1.414-.588 1.414H9.05c-.97 0-1.371-1.24-.588-1.81v-.015c.243-.117.513-.78.028-1.211L6.757 8.743c-.329-.329-.123-1.414.588-1.414h3.193c.3 0 .57-.269.646-.59l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
+              {averageRating && (
+                <span className="flex items-center gap-1.5">★ {averageRating}</span>
+              )}
+              {tour.rating && !averageRating && (
+                <span className="flex items-center gap-1.5">★ {tour.rating}</span>
               )}
             </div>
+            </div>
           </div>
-        </div>
       </div>
 
       {/* Main content grid */}
@@ -222,7 +247,7 @@ function TourDetails() {
 
           {/* Sticky Side Payment card */}
           <div>
-            <div className="bg-white dark:bg-slate-800 p-6 rounded-3xl shadow-2xl border border-gray-150 dark:border-slate-800 h-fit sticky top-24 transition-colors">
+            <div className="bg-white w-96 dark:bg-slate-800 p-6 rounded-3xl shadow-2xl border border-gray-150 dark:border-slate-800 h-fit sticky top-24 transition-colors">
               <div className="text-center pb-6 border-b border-gray-100 dark:border-slate-700">
                 <span className="text-sm text-gray-500 dark:text-slate-400 uppercase tracking-wider">Price per person</span>
                 <div className="text-4xl font-extrabold text-gray-900 dark:text-white mt-1">{formatTZS(tour.price)}</div>
@@ -238,7 +263,7 @@ function TourDetails() {
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-500 dark:text-slate-400">Rating</span>
-                  <span className="font-semibold text-gray-900 dark:text-slate-100">★ {tour.rating}</span>
+                  <span className="font-semibold text-gray-900 dark:text-slate-100">★ {averageRating || tour.rating}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-500 dark:text-slate-400">Group Size</span>
@@ -287,6 +312,132 @@ function TourDetails() {
             </div>
           </div>
         </motion.div>
+      </div>
+
+      <div className="max-w-6xl mx-auto px-6 pb-16">
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.1 }}
+          className="rounded-[2rem] border border-gray-200/70 bg-gradient-to-br from-white via-white to-gray-50 p-6 shadow-[0_20px_60px_-20px_rgba(15,23,42,0.2)] dark:border-slate-700 dark:from-slate-800 dark:via-slate-800 dark:to-slate-900 md:p-8"
+        >
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.3em] text-green-600 dark:text-green-400">Traveler Feedback</p>
+              <h3 className="mt-2 text-2xl font-bold text-gray-900 dark:text-white">Reviews</h3>
+            </div>
+            {averageRating && (
+              <div className="flex items-center gap-3 rounded-full bg-green-50 px-4 py-2 text-sm font-semibold text-green-700 dark:bg-green-950/40 dark:text-green-300">
+                <div className="flex items-center gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className={`h-4 w-4 ${i < Math.floor(averageRating) ? "text-yellow-400" : "text-gray-300 dark:text-slate-600"}`} fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.56-.921 1.86 0l1.07 3.292a1 1 0 00.97.69h3.193c.97 0 1.371 1.24.588 1.81v.015c-.243.117-.513.78-.028 1.211l1.293 1.293c.329.329.123 1.414-.588 1.414H9.05c-.97 0-1.371-1.24-.588-1.81v-.015c.243-.117.513-.78.028-1.211L6.757 8.743c-.329-.329-.123-1.414.588-1.414h3.193c.3 0 .57-.269.646-.59l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <span>{averageRating}</span>
+                <span className="text-xs font-medium text-gray-500 dark:text-slate-400">({tourReviews.length} review{tourReviews.length !== 1 ? "s" : ""})</span>
+              </div>
+            )}
+          </div>
+
+          {user && !submitted && (
+            <form onSubmit={handleSubmitReview} className="mt-6 rounded-3xl border border-gray-200/80 bg-white/80 p-5 shadow-sm backdrop-blur dark:border-slate-700 dark:bg-slate-900/70">
+              <h4 className="text-sm font-bold text-gray-900 dark:text-white">Leave a Review</h4>
+              <div className="mt-3 flex flex-wrap items-center gap-3">
+                <div className="flex items-center gap-1">
+                  {[1, 2, 3, 4, 5].map((star) => (
+                    <button
+                      key={star}
+                      type="button"
+                      onClick={() => setReviewRating(star)}
+                      className="rounded-full p-1 transition-transform hover:scale-110"
+                    >
+                      {star <= reviewRating ? (
+                        <FaStar className="h-5 w-5 text-yellow-400" />
+                      ) : (
+                        <FaRegStar className="h-5 w-5 text-gray-300 dark:text-slate-500" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+                <span className="text-xs font-medium text-gray-500 dark:text-slate-400">
+                  {reviewRating > 0 ? `${reviewRating}/5` : "Select rating"}
+                </span>
+              </div>
+              <textarea
+                value={reviewComment}
+                onChange={(e) => setReviewComment(e.target.value)}
+                placeholder="Share your experience with this tour..."
+                rows={3}
+                required
+                className="mt-4 w-full resize-none rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm text-gray-700 outline-none transition focus:border-green-500 focus:ring-4 focus:ring-green-100 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:focus:ring-green-950/30"
+              />
+              <button
+                type="submit"
+                disabled={reviewRating === 0 || !reviewComment.trim()}
+                className="mt-4 rounded-2xl bg-gradient-to-r from-green-600 to-emerald-600 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-green-600/20 transition hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                Submit Review
+              </button>
+            </form>
+          )}
+
+          {submitted && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-6 flex items-center gap-2 rounded-2xl border border-green-100 bg-green-50 p-4 text-sm font-medium text-green-700 dark:border-green-900/30 dark:bg-green-950/20 dark:text-green-400"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+              Review submitted successfully! Thank you for your feedback.
+            </motion.div>
+          )}
+
+          <div className="mt-8 space-y-4">
+            {!tourReviews.length && (
+              <p className="rounded-2xl border border-dashed border-gray-200 bg-white/70 p-4 text-sm text-gray-500 dark:border-slate-700 dark:bg-slate-900/40 dark:text-slate-400">
+                No reviews yet. Be the first to review this tour!
+              </p>
+            )}
+            {[...tourReviews]
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .map((review) => (
+                <motion.article
+                  key={review.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="rounded-3xl border border-gray-200/80 bg-white/90 p-6 shadow-sm transition hover:shadow-md dark:border-slate-700 dark:bg-slate-900/70"
+                >
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-green-500 to-emerald-600 text-sm font-bold text-white">
+                        {review.userName?.[0]?.toUpperCase() || "U"}
+                      </div>
+                      <div>
+                        <p className="text-sm font-bold text-gray-900 dark:text-white">{review.userName}</p>
+                        <div className="mt-1 flex items-center gap-0.5">
+                          {[...Array(5)].map((_, i) => (
+                            <svg key={i} className={`h-3.5 w-3.5 ${i < review.rating ? "text-yellow-400" : "text-gray-300 dark:text-slate-600"}`} fill="currentColor" viewBox="0 0 20 20">
+                              <path d="M9.049 2.927c.3-.921 1.56-.921 1.86 0l1.07 3.292a1 1 0 00.97.69h3.193c.97 0 1.371 1.24.588 1.81v.015c-.243.117-.513.78-.028 1.211l1.293 1.293c.329.329.123 1.414-.588 1.414H9.05c-.97 0-1.371-1.24-.588-1.81v-.015c.243-.117.513-.78.028-1.211L6.757 8.743c-.329-.329-.123-1.414.588-1.414h3.193c.3 0 .57-.269.646-.59l1.07-3.292z" />
+                            </svg>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                    <span className="text-xs font-medium text-gray-400 dark:text-slate-500">
+                      {new Date(review.createdAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                  <p className="mt-4 text-sm leading-relaxed text-gray-700 dark:text-slate-300">
+                    {review.comment}
+                  </p>
+                </motion.article>
+              ))}
+          </div>
+        </motion.section>
       </div>
     </div>
   );

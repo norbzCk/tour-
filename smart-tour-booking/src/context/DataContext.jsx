@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback } from "react";
 import toursData from "../data/tours";
 import bookingsData from "../data/bookings";
+import reviewsData from "../data/reviews";
 import { paymentService } from "../services/paymentService";
 import { notificationService } from "../services/notificationService";
 
@@ -94,18 +95,19 @@ function DataProvider({ children }) {
   const [logs, setLogs] = useState(persistedState?.logs ?? initialLogs);
   const [notifications, setNotifications] = useState(persistedState?.notifications ?? initialNotifications);
   const [payments, setPayments] = useState(persistedState?.payments ?? []);
+  const [reviews, setReviews] = useState(persistedState?.reviews ?? reviewsData.map((r) => ({ ...r, createdAt: r.createdAt || new Date().toISOString() })));
   const [nextId, setNextId] = useState(persistedState?.nextId ?? 100);
 
   useEffect(() => {
     try {
       localStorage.setItem(
         STORAGE_KEY,
-        JSON.stringify({ tours, bookings, users, guides, logs, notifications, payments, nextId })
+        JSON.stringify({ tours, bookings, users, guides, logs, notifications, payments, reviews, nextId })
       );
     } catch (e) {
       console.warn("Failed to persist state:", e);
     }
-  }, [tours, bookings, users, guides, logs, notifications, payments, nextId]);
+  }, [tours, bookings, users, guides, logs, notifications, payments, reviews, nextId]);
 
   const addLog = useCallback((action, user, details) => {
     const log = {
@@ -264,8 +266,8 @@ function DataProvider({ children }) {
   }, [addLog]);
 
   const deleteUser = useCallback((id) => {
-    setUsers((prev) => prev.filter((u) => u.id !== id));
-    addLog("User Deleted", "admin@example.com", `Deleted user ID: ${id}`);
+    setUsers((prev) => prev.filter((u) => (u.id ?? u.email) !== id));
+    addLog("User Deleted", "system", `Deleted user ID: ${id}`);
   }, [addLog]);
 
   const addGuide = useCallback((guide) => {
@@ -286,6 +288,21 @@ function DataProvider({ children }) {
     addLog("Guide Deleted", "admin@example.com", `Deleted guide ID: ${id}`);
   }, [addLog]);
 
+  const addReview = useCallback((review) => {
+    const newReview = {
+      ...review,
+      id: nextId,
+      createdAt: new Date().toISOString(),
+    };
+    setReviews((prev) => [...prev, newReview]);
+    setNextId((prev) => prev + 1);
+    return newReview;
+  }, [nextId]);
+
+  const getReviewsByTourId = useCallback((tourId) => {
+    return reviews.filter((r) => r.tourId === tourId);
+  }, [reviews]);
+
   const findGuideByEmail = useCallback((email) => {
     return guides.find((g) => g.email === email) || null;
   }, [guides]);
@@ -302,6 +319,7 @@ function DataProvider({ children }) {
     payments,
     logs, addLog,
     notifications, addNotification, markNotificationAsRead, markAllNotificationsAsRead,
+    reviews, addReview, getReviewsByTourId,
     formatTZS, USD_TO_TZS,
   };
 

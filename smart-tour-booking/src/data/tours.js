@@ -17,6 +17,7 @@ const tours = [
     rating: 4.8,
     image: "https://images.unsplash.com/photo-1516426122078-c23e76319801",
     description: "Experience the breathtaking wildlife of Serengeti National Park with expert guides and luxury camps.",
+    season: "peak",
     gallery: [
       "https://images.unsplash.com/photo-1516426122078-c23e76319801",
       "https://images.unsplash.com/photo-1534447677768-be436bb09401",
@@ -34,6 +35,7 @@ const tours = [
     rating: 4.6,
     image: nungwiBeach,
     description: "Relax on white sandy beaches, explore Stone Town, and enjoy ocean adventures.",
+    season: "dry",
     gallery: [
       nungwiBeach,
       baladiniBeach,
@@ -51,6 +53,7 @@ const tours = [
     rating: 4.9,
     image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b",
     description: "Climb Africa's highest mountain with professional guides and full support.",
+    season: "dry",
     gallery: [
       "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b",
       "https://images.unsplash.com/photo-1589182373726-e4f658ab50f0",
@@ -68,6 +71,7 @@ const tours = [
     rating: 4.2,
     image: "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b",
     description: "Explore culture, food, beaches, and vibrant city life in Tanzania's largest city.",
+    season: "all",
     gallery: [
       "https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b",
       "https://images.unsplash.com/photo-1555939594-58d7cb561ad1",
@@ -85,6 +89,7 @@ const tours = [
     rating: 4.7,
     image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
     description: "Discover one of the world's most unique natural wildlife sanctuaries.",
+    season: "dry",
     gallery: [
       "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee",
       "https://images.unsplash.com/photo-1534447677768-be436bb09401",
@@ -102,6 +107,7 @@ const tours = [
     rating: 4.8,
     image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5",
     description: "Discover the spectacular marine life of Mafia Island. Swim with whale sharks, dive in pristine coral reefs, and relax in eco-luxury resorts.",
+    season: "dry",
     gallery: [
       "https://images.unsplash.com/photo-1544551763-46a013bb70d5",
       "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
@@ -119,6 +125,7 @@ const tours = [
     rating: 4.7,
     image: "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e",
     description: "Witness the majestic herds of elephants and climb among ancient baobab trees in Tarangire National Park.",
+    season: "peak",
     gallery: [
       "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e",
       "https://images.unsplash.com/photo-1516426122078-c23e76319801",
@@ -136,6 +143,7 @@ const tours = [
     rating: 4.9,
     image: "https://images.unsplash.com/photo-1534447677768-be436bb09401",
     description: "Explore Africa's largest game reserve. Enjoy boat safaris along the Rufiji River and walk side-by-side with wild game.",
+    season: "wet",
     gallery: [
       "https://images.unsplash.com/photo-1534447677768-be436bb09401",
       "https://images.unsplash.com/photo-1516426122078-c23e76319801",
@@ -153,6 +161,7 @@ const tours = [
     rating: 4.8,
     image: "https://images.unsplash.com/photo-1439066615861-d1af74d74000",
     description: "Escape to the untouched island of Pemba, famous for its lush clove plantations, deep diving walls, and peaceful sandbanks.",
+    season: "dry",
     gallery: [
       "https://images.unsplash.com/photo-1439066615861-d1af74d74000",
       "https://images.unsplash.com/photo-1507525428034-b723cf961d3e",
@@ -170,6 +179,7 @@ const tours = [
     rating: 4.9,
     image: "https://images.unsplash.com/photo-1602491453631-e2a5ad90a131",
     description: "Venture into Tanzania's largest, wild, and least-visited national park, home to 10% of the world's lion population.",
+    season: "dry",
     gallery: [
       "https://images.unsplash.com/photo-1602491453631-e2a5ad90a131",
       "https://images.unsplash.com/photo-1504541989296-167df755af3f",
